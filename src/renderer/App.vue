@@ -79,6 +79,14 @@
         <div class="full-height col col-main s8">
           <ul id="tabs-swipe" class="tabs">
             <li class="tab col s3 purple darken-4">
+              <a class="waves-effect waves-light active">{{
+                currentChannel == 'notifications'
+                  ? currentChannel
+                  : '#' + currentChannel
+              }}</a>
+            </li>
+            <!--
+            <li class="tab col s3 purple darken-4">
               <a
                 @click="pickChannel('notifications')"
                 id="swipelink-notifications"
@@ -99,7 +107,7 @@
                 class="waves-effect waves-light swipe-link"
                 >#{{ item }}</a
               >
-            </li>
+            </li>-->
           </ul>
           <div
             :id="'swipe-' + currentChannel"
@@ -190,8 +198,16 @@
         </div>
         <div class="full-height col spacer"></div>
         <div class="full-height col col-main s3">
-          <h6>Channels</h6>
+          <h6>Menu</h6>
           <div class="scrollable half-height">
+            <div class="col s12 channel">
+              <span
+                @click="pickChannel('notifications')"
+                :class="{ active: currentChannel == 'notifications' }"
+                class="link"
+                >#notifications &nbsp;</span
+              >
+            </div>
             <div v-for="(item, i) in channels" :key="i" class="col s12 channel">
               <span
                 @click="pickChannel(item)"
@@ -200,13 +216,19 @@
                   active: currentChannel == item,
                 }"
                 class="link"
-                >[#{{ item }}] &nbsp;</span
+                >#{{ item }} &nbsp;</span
               >
               <div class="move-channel">
-                <span @click="moveChannel(item, 'up')" class="move-up"
+                <span
+                  v-if="item != 'vaverix'"
+                  @click="moveChannel(item, 'up')"
+                  class="move-up"
                   >&uarr;</span
                 >
-                <span @click="moveChannel(item, 'down')" class="move-down"
+                <span
+                  v-if="item != 'vaverix'"
+                  @click="moveChannel(item, 'down')"
+                  class="move-down"
                   >&darr;</span
                 >
                 <span
@@ -532,7 +554,7 @@ export default {
       if (!this.emotes || !this.emotes.data || !this.emotes.data.global)
         return message
       const makeImage = (emoteName, emoteUrl) => {
-        return `<img src="${emoteUrl}">`
+        return `<img class="emote" src="${emoteUrl}">`
       }
       let newMessage = message
       if (emotes) {
@@ -843,6 +865,9 @@ body,
 .input-message .col {
   display: inline-grid;
 }
+#swipe-notifications .input-field {
+  display: none;
+}
 .relative {
   position: relative;
 }
@@ -859,21 +884,27 @@ body,
   margin-bottom: 0;
 }
 .scrollable.half-height {
-  height: 36vh;
+  padding-top: 0;
+  padding-left: 10px;
+  height: 33vh;
 }
 .datetime {
   color: grey;
   font-size: 11px;
 }
 .channel {
+  font-size: 12px;
   font-weight: bold;
+  background: #ffffff08;
+  border-radius: 2px;
+  padding: 5px 10px !important;
+  position: relative;
+  margin: 5px 0;
 }
 .channel span.active {
   color: white;
 }
-.message,
-.channel {
-  font-size: 13px;
+.message {
   padding: 5px 5px 2px 5px !important;
   margin: 5px 0;
 }
@@ -915,11 +946,12 @@ input,
 }
 .online:before {
   content: ' ';
-  background: green;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #007700;
   border-radius: 30px;
-  margin-left: -5px;
-  margin-right: 5px;
-  display: inline-flex;
+  display: inline-block;
   height: 4px;
   width: 4px;
 }
@@ -932,11 +964,16 @@ input,
 }
 .delete {
   color: #fff;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: bold;
+  position: relative;
+  top: -2px;
 }
 .badge {
   height: 14px;
+}
+.emote {
+  height: 22px;
 }
 .tabs {
   background-color: rgba(0, 0, 0, 0.1);
