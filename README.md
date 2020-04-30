@@ -2,7 +2,7 @@
 # vaverix-twitch-bot
 
 Desktop application that allows you to log-in into multiple Twitch.tv channels at once. It also notifies you when someone mentions you in any channel you choose and has couple of other extra features.
-It is more lightweight for you CPU and memory, comparing to web browser with many Twitch.tv tabs opened and it can be left running in the background.
+It is more lightweight for your CPU and memory, comparing to web browser with many Twitch.tv tabs opened and it can be left running in the background.
 
 Doesn't matter if you wanna grind channel points or just be aware if someone is talking about you, this app is for you!
 
