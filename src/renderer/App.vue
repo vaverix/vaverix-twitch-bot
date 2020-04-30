@@ -38,7 +38,12 @@
               <span class="helper-text"
                 >Your Twitch.tv OAuth token to access the chat. If you don't
                 know what is it, you can get one
-                <a href="https://twitchapps.com/tmi/" target="_blank">here</a>.
+                <a
+                  @click="open('https://twitchapps.com/tmi/')"
+                  href
+                  target="_blank"
+                  >here</a
+                >.
                 <br />
                 It is used to log-in to the official Twitch.tv server locally
                 from your computer and no data is sent to our servers.<br />You
