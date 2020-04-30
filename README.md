@@ -26,7 +26,7 @@ Yes. It uses an oAuth token to log-in as you and it doesn't send anything anywhe
 
 It's just much safer. oAuth token is used to authorize you as you and it gives limited access to your account. This way, 3rd party applications can't discover your password and it prevents your accounts from being stolen in several ways. More information [here](https://en.wikipedia.org/wiki/OAuth).
 
-### Ok, where can I get oAuth token
+### Ok, where can I get an oAuth token
 
 You can generate your token using Twitch API. But if you are not a computer programmer, you can get one [here](https://twitchapps.com/tmi/). It generates your token locally in your browser, shows it to you only and it doesn't send it anywhere else.
 
