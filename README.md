@@ -18,12 +18,6 @@ Doesn't matter if you wanna grind channel points or just be aware if someone is 
 
 Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) page, download the latest .exe file and run it! That's it.
 
-### Windows SmartScreen
-
-If Windows Defender SmartScreen blocks the app from running, you can just click "More info" and then click "Run". Don't worry, it's perfectly safe, it pops-up because I don't sign the installer with Microsoft certificate. You can even check the source code and compile the app yourself!
-
-![Screenshot](smartscreen.png)
-
 ### Is this app safe
 
 Yes. It uses an oAuth token to log-in as you and it doesn't send anything anywhere besides official Twitch.tv server. You can even check the source code and compile the app yourself.
@@ -35,6 +29,12 @@ It's just much safer. oAuth token is used to authorize you as you and it gives l
 ### Ok, where can I get oAuth token
 
 You can generate your token using Twitch API. But if you are not a computer programmer, you can get one [here](https://twitchapps.com/tmi/). It generates your token locally in your browser, shows it to you only and it doesn't send it anywhere else.
+
+### Windows SmartScreen
+
+If Windows Defender SmartScreen blocks the app from running, you can just click "More info" and then click "Run". Don't worry, it's perfectly safe, it pops-up because I don't sign the installer with Microsoft certificate. You can even check the source code and compile the app yourself!
+
+![Screenshot](smartscreen.png)
 
 ### Compiling the app yourself
 
