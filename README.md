@@ -24,7 +24,19 @@ If Windows Defender SmartScreen blocks the app from running, you can just click 
 
 ![Screenshot](smartscreen.png)
 
-### Compiling yourself
+### Is this app safe
+
+Yes. It uses an oAuth token to log-in as you and it doesn't send anything anywhere besides official Twitch.tv server. You can even check the source code and compile the app yourself.
+
+### What is an oAuth token and why can't I just log-in with my password
+
+It's just much safer. oAuth token is used to authorize you as you and it gives limited access to your account. This way, 3rd party applications can't discover your password and it prevents your accounts from being stolen in several ways. More information [here](https://en.wikipedia.org/wiki/OAuth).
+
+### Ok, where can I get oAuth token
+
+You can generate your token using Twitch API. But if you are not a computer programmer, you can get one [here](https://twitchapps.com/tmi/). It generates your token locally in your browser, shows it to you only and it doesn't send it anywhere else.
+
+### Compiling the app yourself
 
 The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm`.
 Make sure to check out [`electron-webpack`'s documentation](https://webpack.electron.build/) for more details.
