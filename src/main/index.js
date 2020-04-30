@@ -41,6 +41,10 @@ const bttvEmoteCache = {
   urlTemplate: '//cdn.betterttv.net/emote/{{id}}/{{image}}',
 }
 
+// autoupdater
+autoUpdater.logger = require('electron-log')
+autoUpdater.logger.transports.file.level = 'info'
+
 // build menu
 const template = [
   // { role: 'appMenu' }
@@ -120,6 +124,17 @@ const template = [
             { role: 'window' },
           ]
         : [{ role: 'close' }]),
+    ],
+  },
+  {
+    label: 'Update',
+    submenu: [
+      {
+        label: 'Check for update',
+        click: () => {
+          autoUpdater.checkForUpdatesAndNotify()
+        },
+      },
     ],
   },
   {
@@ -228,10 +243,9 @@ app.on('activate', () => {
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow()
-  // autoupdater
-  autoUpdater.logger = require('electron-log')
-  autoUpdater.logger.transports.file.level = 'info'
+  // check for updates
   autoUpdater.checkForUpdatesAndNotify()
+  setInterval(autoUpdater.checkForUpdatesAndNotify, 600000)
 })
 
 const getWindowPosition = () => {

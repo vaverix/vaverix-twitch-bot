@@ -248,7 +248,11 @@
           <h6>Options</h6>
           <div class="options">
             <p>
-              <label>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Scroll messages container to the bottom when a new message appears"
+              >
                 <input
                   v-model="options['__autoscroll']"
                   @change="updateOptions()"
@@ -258,7 +262,11 @@
               </label>
             </p>
             <p>
-              <label>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Hide the app to the Windows tray when it loses focus"
+              >
                 <input
                   v-model="options['__autohide']"
                   @change="updateOptions()"
@@ -268,7 +276,11 @@
               </label>
             </p>
             <p>
-              <label>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Enable Windows notifications"
+              >
                 <input
                   v-model="options['__notifications']"
                   @change="updateOptions()"
@@ -278,7 +290,11 @@
               </label>
             </p>
             <p>
-              <label>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Enable in-app notifications"
+              >
                 <input
                   v-model="options['__toasts']"
                   @change="updateOptions()"
@@ -288,7 +304,11 @@
               </label>
             </p>
             <p>
-              <label>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Enable sound que when a new notification appears"
+              >
                 <input
                   v-model="options['__soundalerts']"
                   @change="updateOptions()"
@@ -298,7 +318,11 @@
               </label>
             </p>
             <p>
-              <label>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Enable Twitch.tv stream preview (performance and memory heavy feature since it actually loads Twitch player embeded)"
+              >
                 <input
                   v-model="options['__streampreview']"
                   @change="updateOptions()"
@@ -586,6 +610,8 @@ export default {
     materializeScript.onload = () => {
       // enable materialize.css javascript
       M.AutoInit() // eslint-disable-line
+      // enable materialize.css tooltips
+      M.Tooltip.init(document.querySelectorAll('.tooltipped')) // eslint-disable-line
     }
     document.head.appendChild(materializeScript)
     // add fonts
@@ -674,7 +700,10 @@ export default {
       self.notifications.push(item)
       self.$forceUpdate()
       self.scrollBottom(`#scrollable-notifications`)
-      self.showNotification('vaverixBot', `[#${item.channel}]: ${item.message}`)
+      self.showNotification(
+        'vaverixBot',
+        `[#${item.channel}] @${item.username}: ${item.message}`
+      )
     })
     ipcRenderer.on('channel:list', (e, item) => {
       self.channels = item
