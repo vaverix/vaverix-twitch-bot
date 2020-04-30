@@ -62,7 +62,7 @@
               </button>
               <button
                 v-if="isDevelopment"
-                @click="loggedIn = true"
+                @click="hideLoginPage()"
                 id="twitch_hideloginscreen"
                 type="button"
                 class="btn purple darken-4"
@@ -163,7 +163,9 @@
           </div>
           <div
             v-if="
-              options['__streampreview'] && currentChannel != 'notifications'
+              options['__streampreview'] &&
+              currentChannel != 'notifications' &&
+              isConnected
             "
             id="stream-preview"
             ref="stream-preview"
@@ -335,6 +337,27 @@
         </div>
       </div>
     </div>
+    <div v-if="!isConnected" class="preloader">
+      <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-red-only">
+          <div class="circle-clipper left">
+            <div class="circle"></div>
+          </div>
+          <div class="gap-patch">
+            <div class="circle"></div>
+          </div>
+          <div class="circle-clipper right">
+            <div class="circle"></div>
+          </div>
+        </div>
+      </div>
+      <p>
+        Trying to connect to Twitch.tv. Did someone fall over the servers?
+        <img
+          src="data:image/png;base64,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"
+        />
+      </p>
+    </div>
     <div @click="versionClick()" class="app-version">{{ versions.app }}</div>
   </div>
 </template>
@@ -376,6 +399,7 @@ export default {
         __streampreview: false,
       },
       loggedIn: false,
+      isConnected: false,
       disableLogin: false,
       versions: {
         electron: process.versions.electron,
@@ -419,7 +443,10 @@ export default {
         String(this.input['__channel']).length < 3
       )
         return
-      ipcRenderer.send('channel:add', this.input['__channel'])
+      ipcRenderer.send(
+        'channel:add',
+        String(this.input['__channel']).replace('#', '')
+      )
       this.input['__channel'] = ''
     },
     removeChannel(channel) {
@@ -596,6 +623,10 @@ export default {
         drag(elem, elemHeader)
       })
     },
+    hideLoginPage() {
+      this.loggedIn = true
+      this.isConnected = true
+    },
   },
   mounted() {
     // save 'this' keyword for future reference
@@ -635,6 +666,11 @@ export default {
     ipcRenderer.on('app:loggedIn', (e, item) => {
       console.log('Successfully logged in')
       self.loggedIn = true
+      self.isConnected = true
+    })
+    ipcRenderer.on('app:disconnected', (e, item) => {
+      console.log(`Disconnected from the server, reason: ${item}`)
+      self.isConnected = false
     })
     ipcRenderer.on('app:wrongLogin', (e, item) => {
       console.log('Wrong credentials')
@@ -934,6 +970,33 @@ input,
 }
 .player-ui {
   display: none !important;
+}
+.preloader {
+  display: inline-grid;
+  background: rgba(0, 0, 0, 0.9);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  vertical-align: middle;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+}
+.preloader p {
+  line-height: 14px;
+  font-size: 14px;
+}
+.preloader p img {
+  margin-bottom: -8px;
+}
+.preloader-wrapper {
+  left: 47%;
+  top: 76%;
+  left: calc(50% - 25px);
+  top: calc(86% - 25px);
 }
 #toast-container {
   top: 7% !important;

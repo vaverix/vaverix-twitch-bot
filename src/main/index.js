@@ -31,6 +31,7 @@ let optionsDefaults = {
 }
 let options = store.get('options', optionsDefaults)
 let twitchData = store.get('twitchData', { username: '', oauth: '' })
+let twitchIsConnected = false
 let twitch
 const twitchBadgeCache = {
   data: { global: {} },
@@ -423,9 +424,14 @@ ipcMain.on('app:login', (e, data) => {
   }
   if (twitch && twitch.on) {
     twitch.on('connected', () => {
+      twitchIsConnected = true
       mainWindow.webContents.send('app:loggedIn', channels)
       getBTTVEmotes()
       getBadges()
+    })
+    twitch.on('disconnected', (reason) => {
+      twitchIsConnected = false
+      mainWindow.webContents.send('app:disconnected', reason)
     })
     twitch.on('message', (channel, tags, message, self) => {
       try {
