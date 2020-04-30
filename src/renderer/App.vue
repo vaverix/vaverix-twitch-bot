@@ -31,7 +31,7 @@
                 onchange="onKeyPressHack(event, this)"
                 name="__oauth"
                 id="twitch_oauth"
-                type="text"
+                type="password"
                 autocomplete="off"
               />
               <label class="active" for="twitch_oauth">Twitch.tv oauth</label>

@@ -7,8 +7,6 @@ Doesn't matter if you wanna grind channel points or just be aware if someone is 
 ![Screenshot](screen1.png)
 ![Screenshot](screen2.png)
 
-Make sure to check out [`electron-webpack`'s documentation](https://webpack.electron.build/) for more details.
-
 ## Getting Started
 
 Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) page, download and run it!
@@ -16,6 +14,7 @@ Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) 
 ### Compiling yourself
 
 The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm`.
+Make sure to check out [`electron-webpack`'s documentation](https://webpack.electron.build/) for more details.
 
 ```bash
 git clone https://github.com/vaverix/vaverix-twitch-bot.git
