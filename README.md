@@ -20,7 +20,7 @@ Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) 
 
 ### Is this app safe
 
-Yes. It uses an oAuth token to log-in as you and it doesn't send anything anywhere besides official Twitch.tv server. You can even check the source code and compile the app yourself.
+Yes. It uses an oAuth token to log-in as you and it doesn't send anything anywhere besides official Twitch.tv server. You can even check the source code and compile the app yourself!
 
 ### What is an oAuth token and why can't I just log-in with my password
 
@@ -32,7 +32,7 @@ You can generate your token using Twitch API. But if you are not a computer prog
 
 ### Windows SmartScreen
 
-If Windows Defender SmartScreen blocks the app from running, you can just click "More info" and then click "Run". Don't worry, it's perfectly safe, it pops-up because I don't sign the installer with Microsoft certificate. You can even check the source code and compile the app yourself!
+If Windows Defender SmartScreen blocks the app from running, you can just click "More info" and then click "Run". Don't worry, it's perfectly safe, it pops-up because I don't sign the installer with Microsoft certificate.
 
 ![Screenshot](smartscreen.png)
 
