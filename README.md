@@ -20,7 +20,7 @@ Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) 
 
 ### Windows SmartScreen
 
-If Windows Defender SmartScreen blocks the app from running, you can just click "Read more" and then click "Run". Don't worry, it's perfectly safe, it pops-up because I don't sign the installer with Microsoft certificate. You can even check the source code and compile the app yourself!
+If Windows Defender SmartScreen blocks the app from running, you can just click "More info" and then click "Run". Don't worry, it's perfectly safe, it pops-up because I don't sign the installer with Microsoft certificate. You can even check the source code and compile the app yourself!
 
 ![Screenshot](smartscreen.png)
 
