@@ -14,7 +14,13 @@ Doesn't matter if you wanna grind channel points or just be aware if someone is 
 
 ## Getting Started
 
-Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) page, download and run it!
+Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) page, download .exe and run it!
+
+### Windows SmartScreen
+
+If Windows Defender SmartScreen blocks the app from running, you can just click "Read more" and then click "Run". Don't worry, it's perfectly safe, it pops-up because I don't sign the installer with Microsoft certificate. You can even check the source code and compile the app yourself!
+
+![Screenshot](smartscreen.png)
 
 ### Compiling yourself
 
