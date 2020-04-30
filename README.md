@@ -8,6 +8,8 @@ Doesn't matter if you wanna grind channel points or just be aware if someone is 
 
 ![Screenshot](screen2.png)
 
+![Screenshot](screen3.png)
+
 ## Getting Started
 
 Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) page, download and run it!
