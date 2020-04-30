@@ -14,7 +14,9 @@ Doesn't matter if you wanna grind channel points or just be aware if someone is 
 
 ## Getting Started
 
-Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) page, download .exe and run it!
+### Installation
+
+Just head to [releases](https://github.com/vaverix/vaverix-twitch-bot/releases) page, download latest .exe file and run it! That's it.
 
 ### Windows SmartScreen
 
