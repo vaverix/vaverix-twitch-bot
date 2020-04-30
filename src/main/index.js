@@ -245,7 +245,13 @@ app.on('ready', () => {
   mainWindow = createMainWindow()
   // check for updates
   autoUpdater.checkForUpdatesAndNotify()
-  setInterval(autoUpdater.checkForUpdatesAndNotify, 600000)
+  setInterval(() => {
+    try {
+      autoUpdater.checkForUpdatesAndNotify()
+    } catch (error) {
+      console.log(error)
+    }
+  }, 600000)
 })
 
 const getWindowPosition = () => {

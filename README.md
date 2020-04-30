@@ -5,6 +5,7 @@ Desktop application that allows you to log-in into multiple Twitch.tv channels a
 Doesn't matter if you wanna grind channel points or just be aware if someone is talking about you, this app is for you!
 
 ![Screenshot](screen1.png)
+
 ![Screenshot](screen2.png)
 
 ## Getting Started
