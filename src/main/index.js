@@ -28,6 +28,8 @@ let optionsDefaults = {
   __soundalerts: true,
   __messagesLimit: 100,
   __streampreview: false,
+  __streampreviewmode: 'docked',
+  __keywords: '',
 }
 let options = store.get('options', optionsDefaults)
 let twitchData = store.get('twitchData', { username: '', oauth: '' })
@@ -165,12 +167,17 @@ function createMainWindow() {
     toggleWindow()
   })
 
-  let { width, height } = store.get('windowBounds', { width: 930, height: 685 })
+  let { width, height } = store.get('windowBounds', {
+    width: 1100,
+    height: 685,
+  })
 
   const window = new BrowserWindow({
     webPreferences: { nodeIntegration: true },
     width,
     height,
+    minWidth: 1100,
+    minHeight: 685,
   })
 
   if (isDevelopment) {
@@ -425,7 +432,7 @@ ipcMain.on('app:login', (e, data) => {
   if (twitch && twitch.on) {
     twitch.on('connected', () => {
       twitchIsConnected = true
-      mainWindow.webContents.send('app:loggedIn', channels)
+      mainWindow.webContents.send('app:loggedIn', twitchData)
       getBTTVEmotes()
       getBadges()
     })
@@ -441,6 +448,7 @@ ipcMain.on('app:login', (e, data) => {
           name += ` (${tags.username})`
         }
         tags.name = name
+        message = String(message)
         let msg = {
           datetime: new Date(Date.now()).toLocaleString(),
           username: tags.name,
@@ -451,8 +459,35 @@ ipcMain.on('app:login', (e, data) => {
           channel,
         }
         mainWindow.webContents.send('channel:message', msg)
-        if (self) return
-        if (message.toLowerCase().indexOf(twitchData.username) != -1) {
+        //if (self) return
+        let lookFor = []
+        let notify = false
+        let username =
+          twitchData &&
+          twitchData.username &&
+          String(twitchData.username).length > 2
+            ? String(twitchData.username)
+            : false
+        let keywords =
+          options &&
+          options['__keywords'] &&
+          String(options['__keywords']).length > 2
+            ? String(options['__keywords'])
+            : false
+        if (username) {
+          lookFor.push(username)
+        }
+        if (keywords) {
+          lookFor = lookFor.concat(keywords.split(','))
+        }
+        lookFor.forEach((val) => {
+          let searchFor = String(val).toLowerCase().trim()
+          if (message.toLowerCase().indexOf(searchFor) != -1) notify = true
+        })
+        console.log(lookFor)
+        console.log(message)
+        console.log(notify)
+        if (notify) {
           mainWindow.webContents.send('channel:notification', msg)
         }
       } catch (error) {
@@ -489,7 +524,7 @@ ipcMain.on('app:login', (e, data) => {
 ipcMain.on('channel:add', (e, channel) => {
   if (!channel || String(channel).length < 3 || channels.indexOf(channel) != -1)
     return
-  channels.push(channel)
+  channels.push(String(channel).toLowerCase())
   store.set('channels', channels)
   mainWindow.webContents.send('channel:list', getChannels())
   mainWindow.webContents.send('channel:message', {

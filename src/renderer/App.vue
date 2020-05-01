@@ -79,40 +79,50 @@
         </div>
       </div>
     </div>
-    <div class="main relative grey darken-4">
-      <div class="row full-height">
+    <div
+      id="main-container"
+      :class="
+        options['__streampreview'] && currentChannel != 'notifications'
+          ? 'streampreview-' + options['__streampreviewmode']
+          : 'off'
+      "
+      class="main relative grey darken-4"
+    >
+      <div
+        v-if="
+          options['__streampreview'] &&
+          currentChannel != 'notifications' &&
+          isConnected
+        "
+        :class="options['__streampreviewmode']"
+        id="stream-preview"
+        ref="stream-preview"
+      >
+        <div id="stream-preview-header" ref="stream-preview-header">
+          Stream preview (click-to-drag)
+        </div>
+        <iframe
+          :src="
+            'https://player.twitch.tv/?channel=' +
+            currentChannel +
+            '&parent=localhost'
+          "
+          height="100%"
+          width="100%"
+          frameborder="false"
+          scrolling="false"
+          allowfullscreen="false"
+        >
+        </iframe>
+      </div>
+      <div id="chat-container" class="row full-height">
         <div class="full-height col col-main s8">
           <ul id="tabs-swipe" class="tabs">
             <li class="tab col s3 purple darken-4">
-              <a class="waves-effect waves-light active">{{
-                currentChannel == 'notifications'
-                  ? currentChannel
-                  : '#' + currentChannel
-              }}</a>
+              <a class="waves-effect waves-light active">
+                {{ '#' + currentChannel }}
+              </a>
             </li>
-            <!--
-            <li class="tab col s3 purple darken-4">
-              <a
-                @click="pickChannel('notifications')"
-                id="swipelink-notifications"
-                class="swipe-link waves-effect waves-light active"
-                href="#swipe-notifications"
-                >Notifications</a
-              >
-            </li>
-            <li
-              v-for="(item, i) in channels"
-              :key="i"
-              class="tab col s3 purple darken-4"
-            >
-              <a
-                @click="pickChannel(item)"
-                :id="'swipelink-' + item"
-                :class="{ active: currentChannel == item }"
-                class="waves-effect waves-light swipe-link"
-                >#{{ item }}</a
-              >
-            </li>-->
           </ul>
           <div
             :id="'swipe-' + currentChannel"
@@ -120,6 +130,7 @@
           >
             <div
               :id="'scrollable-' + currentChannel"
+              @scroll.passive="onScroll"
               class="row scrollable with-input"
             >
               <div
@@ -174,35 +185,8 @@
               </div>
             </div>
           </div>
-          <div
-            v-if="
-              options['__streampreview'] &&
-              currentChannel != 'notifications' &&
-              isConnected
-            "
-            id="stream-preview"
-            ref="stream-preview"
-          >
-            <div id="stream-preview-header" ref="stream-preview-header">
-              Stream preview (click-to-drag)
-            </div>
-            <iframe
-              :src="
-                'https://player.twitch.tv/?channel=' +
-                currentChannel +
-                '&parent=localhost'
-              "
-              height="100%"
-              width="100%"
-              frameborder="false"
-              scrolling="false"
-              allowfullscreen="false"
-            >
-            </iframe>
-          </div>
         </div>
-        <div class="full-height col spacer"></div>
-        <div class="full-height col col-main s3">
+        <div class="full-height col col-main s4">
           <h6>Menu</h6>
           <div class="scrollable half-height">
             <div class="col s12 channel">
@@ -274,7 +258,15 @@
               </div>
             </div>
           </div>
-          <h6>Options</h6>
+          <h6>
+            Options
+            <span
+              @click="showAdvancedOptions = true"
+              class="pull-right x-small link"
+            >
+              advanced
+            </span>
+          </h6>
           <div class="options">
             <p>
               <label
@@ -364,6 +356,64 @@
         </div>
       </div>
     </div>
+    <div v-if="isConnected && showAdvancedOptions" id="advanced-options">
+      <div @click="showAdvancedOptions = false" class="link advanced-close">
+        X
+      </div>
+      <div class="advanced-wrapper">
+        <div>
+          <h6>Options</h6>
+        </div>
+        <div class="options">
+          <div class="options-group">
+            <label for="__streampreviewmode"
+              >How stream preview should look like
+            </label>
+            <p>
+              <label>
+                <input
+                  v-model="options['__streampreviewmode']"
+                  onchange="onKeyPressHack(event, this, true)"
+                  class="with-gap"
+                  name="__streampreviewmode"
+                  value="inApp"
+                  type="radio"
+                />
+                <span>In-app Mini preview</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input
+                  v-model="options['__streampreviewmode']"
+                  onchange="onKeyPressHack(event, this, true)"
+                  class="with-gap"
+                  name="__streampreviewmode"
+                  value="docked"
+                  type="radio"
+                />
+                <span>Docked</span>
+              </label>
+            </p>
+          </div>
+          <div class="options-group">
+            <label for="__keywords">
+              Custom notification keywords<br />(what to look for in messages,
+              except your username)
+            </label>
+            <input
+              v-model="options['__keywords']"
+              onchange="onKeyPressHack(event, this, true)"
+              name="__keywords"
+              class="input-small"
+              type="text"
+              autocomplete="off"
+            />
+            <label for="__keywords">(seperated by comma ",") </label>
+          </div>
+        </div>
+      </div>
+    </div>
     <div v-if="!isConnected" class="preloader">
       <div class="preloader-wrapper active">
         <div class="spinner-layer spinner-red-only">
@@ -424,7 +474,10 @@ export default {
         __soundalerts: true,
         __messagesLimit: 100,
         __streampreview: false,
+        __streampreviewmode: 'docked',
+        __keywords: '',
       },
+      showAdvancedOptions: false,
       loggedIn: false,
       isConnected: false,
       disableLogin: false,
@@ -479,6 +532,7 @@ export default {
     removeChannel(channel) {
       if (!channel || String(channel).length < 3) return
       if (confirm(`Are you sure you wanna delete #${channel}?`)) {
+        this.currentChannel = 'notifications'
         ipcRenderer.send('channel:remove', channel)
         delete this.messages[channel]
       }
@@ -499,6 +553,12 @@ export default {
     updateOptions() {
       if (!this.options || this.options.length < 0) return
       ipcRenderer.send('options:update', this.options)
+      if (this.options['__autoscroll']) {
+        this.scrollBottom(`#scrollable-${this.currentChannel}`)
+      }
+      if (this.options['__streampreview']) {
+        this.dragStreamPreview()
+      }
     },
     scrollBottom(div) {
       if (!this.options || !this.options['__autoscroll']) return
@@ -644,15 +704,36 @@ export default {
           document.onmousemove = null
         }
       }
-      this.$nextTick(() => {
-        let elem = this.$el.querySelector('#stream-preview')
-        let elemHeader = this.$el.querySelector('#stream-preview-header')
-        drag(elem, elemHeader)
-      })
+      if (
+        this.options['__streampreview'] &&
+        this.options['__streampreviewmode'] == 'inApp'
+      ) {
+        this.$nextTick(() => {
+          let elem = this.$el.querySelector('#stream-preview')
+          let elemHeader = this.$el.querySelector('#stream-preview-header')
+          drag(elem, elemHeader)
+        })
+      }
     },
     hideLoginPage() {
       this.loggedIn = true
       this.isConnected = true
+    },
+    onScroll(event) {
+      let sTop = event.target.scrollTop
+      let sHeight = event.target.scrollHeight
+      let cHeight = event.target.clientHeight
+      let maxScrollTop = sHeight - cHeight
+      console.log(
+        `sTop ${sTop} / sHeight ${sHeight} / cHeight ${cHeight} / maxScroll ${maxScrollTop} / checking ${
+          sTop >= maxScrollTop - 10
+        }`
+      )
+      if (this.options && this.options['__autoscroll']) {
+        if (sTop < maxScrollTop - 100) {
+          this.options['__autoscroll'] = false
+        }
+      }
     },
   },
   mounted() {
@@ -683,10 +764,15 @@ export default {
     // materialize.css hack to update changes in vue model
     this.onKeyPressHack = window.onKeyPressHack = function onKeyPressHack(
       event,
-      input
+      input,
+      isOptionsInput = false
     ) {
-      self.input[input.name] = input.value
-      self.$forceUpdate()
+      if (isOptionsInput) {
+        self.options[input.name] = input.value
+        ipcRenderer.send('options:update', self.options)
+      } else {
+        self.input[input.name] = input.value
+      }
     }
     // set-up communication with the main app script and let it know that vue app is ready
     ipcRenderer.removeAllListeners()
@@ -694,6 +780,12 @@ export default {
       console.log('Successfully logged in')
       self.loggedIn = true
       self.isConnected = true
+      self.notifications.push({
+        channel: 'notifications',
+        username: 'vaverixBot',
+        message: `Logged in as ${item.username}`,
+        datetime: new Date(Date.now()).toLocaleString(),
+      })
     })
     ipcRenderer.on('app:disconnected', (e, item) => {
       console.log(`Disconnected from the server, reason: ${item}`)
@@ -732,13 +824,13 @@ export default {
       }
     })
     ipcRenderer.on('channel:badges', (e, item) => {
-      console.log('channel:badges')
-      console.log(item)
+      //console.log('channel:badges')
+      //console.log(item)
       self.badges = item
     })
     ipcRenderer.on('channel:emotes', (e, item) => {
-      console.log('channel:emotes')
-      console.log(item)
+      //console.log('channel:emotes')
+      //console.log(item)
       self.emotes = item
     })
     ipcRenderer.on('channel:message', (e, item) => {
@@ -836,6 +928,9 @@ body,
 .display-contents {
   display: contents;
 }
+.input-field.col label {
+  display: inline-block !important;
+}
 .input-field .helper-text {
   color: white;
 }
@@ -855,9 +950,9 @@ body,
   height: 2.7rem;
 }
 .input-message {
-  position: fixed;
-  bottom: -12px;
-  width: 61vw;
+  position: absolute;
+  bottom: -100px;
+  width: 100%;
 }
 .input-message button {
   min-width: 36px !important;
@@ -884,7 +979,8 @@ body,
   overflow-y: scroll;
 }
 .scrollable.with-input {
-  height: 76vh;
+  height: 75vh;
+  height: calc(100vh - 155px);
   padding: 20px 20px 0 20px;
   margin-bottom: 0;
 }
@@ -941,6 +1037,9 @@ input,
   border-radius: 5px;
   position: relative;
 }
+.col-main:nth-child(even) {
+  margin: 0 -5px 0 5px !important;
+}
 .username,
 .link {
   color: hsl(260, 100%, 71%);
@@ -984,14 +1083,12 @@ input,
   background-color: rgba(0, 0, 0, 0.1);
   height: 30px;
   line-height: 30px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  display: inline-block;
   padding-bottom: 40px;
 }
 .tabs .tab {
   line-height: 30px;
+  min-width: 150px;
 }
 .tabs .tab a,
 .tabs .tab a:hover,
@@ -1013,6 +1110,13 @@ input,
 .player-ui {
   display: none !important;
 }
+.pull-right {
+  float: right;
+}
+.x-small {
+  font-size: 12px;
+}
+#advanced-options,
 .preloader {
   display: inline-grid;
   background: rgba(0, 0, 0, 0.9);
@@ -1026,6 +1130,22 @@ input,
   z-index: 1000;
   height: 100%;
   width: 100%;
+}
+.advanced-wrapper {
+  display: inline-grid;
+  text-align: center;
+}
+.advanced-wrapper .options-group {
+  margin: 0 auto;
+  padding: 10px 20px;
+  width: 42%;
+  border-top: 1px solid #292929;
+}
+.advanced-close {
+  font-size: 14px;
+  position: absolute;
+  top: 13px;
+  right: 25px;
 }
 .preloader p {
   line-height: 14px;
@@ -1054,25 +1174,40 @@ input,
 #add_channel_container .input-field {
   margin: 0;
 }
+#main-container.streampreview-docked #stream-preview {
+  float: left;
+  height: 100%;
+  width: 39%;
+}
+#main-container.streampreview-docked #chat-container {
+  float: left;
+  width: 60%;
+}
 #stream-preview {
   border: 1px solid #444444;
   background: #131417;
+}
+#stream-preview.inApp {
   position: absolute;
   padding-bottom: 19px;
   top: 55px;
-  right: 35px;
+  left: 28vw;
   height: 26vh;
   width: 33vw;
   opacity: 0.9;
   z-index: 100;
 }
 #stream-preview-header {
+  display: none;
   cursor: move;
   color: white;
   padding: 4px 4px 0px 4px;
   font-size: 10px;
   text-align: center;
   user-select: none;
+}
+#stream-preview.inApp #stream-preview-header {
+  display: block;
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -1144,5 +1279,14 @@ textarea.materialize-textarea:focus:not([readonly]) {
   height: 23px;
   line-height: 23px;
   font-size: 0.8rem;
+}
+[type='radio']:checked + span:after,
+[type='radio'].with-gap:checked + span:before,
+[type='radio'].with-gap:checked + span:after {
+  border: 2px solid #9b6aff;
+}
+[type='radio']:checked + span:after,
+[type='radio'].with-gap:checked + span:after {
+  background-color: #9b6aff;
 }
 </style>
