@@ -1119,7 +1119,7 @@ input,
 #advanced-options,
 .preloader {
   display: inline-grid;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.97);
   position: absolute;
   top: 0;
   left: 0;
