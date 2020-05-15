@@ -374,8 +374,16 @@ const getBTTVEmotes = (channel) => {
           bttvEmoteCache.data[channel] = []
         }
         bttvEmoteCache.data[channel].push(n)
+        bttvEmoteCache.data[channel] = underscore.uniq(
+          bttvEmoteCache.data[channel],
+          'code'
+        )
       } else {
         bttvEmoteCache.data.global.push(n)
+        bttvEmoteCache.data.global = underscore.uniq(
+          bttvEmoteCache.data.global,
+          'code'
+        )
       }
       mainWindow.webContents.send('channel:emotes', bttvEmoteCache)
     })
@@ -484,9 +492,6 @@ ipcMain.on('app:login', (e, data) => {
           let searchFor = String(val).toLowerCase().trim()
           if (message.toLowerCase().indexOf(searchFor) != -1) notify = true
         })
-        console.log(lookFor)
-        console.log(message)
-        console.log(notify)
         if (notify) {
           mainWindow.webContents.send('channel:notification', msg)
         }

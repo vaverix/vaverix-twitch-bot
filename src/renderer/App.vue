@@ -130,6 +130,7 @@
           >
             <div
               :id="'scrollable-' + currentChannel"
+              @click="showEmotesMenu = false"
               @scroll.passive="onScroll"
               class="row scrollable with-input"
             >
@@ -171,7 +172,7 @@
                 />
                 <label for="input_message">message...</label>
               </div>
-              <div class="col s2 input-field">
+              <div class="col s2 input-field flow-root">
                 <button
                   @click="sendMessage(currentChannel)"
                   class="btn-small waves-effect waves-light purple darken-4"
@@ -182,6 +183,56 @@
                       src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAASCAYAAACw50UTAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF7GlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDUgNzkuMTYzNDk5LCAyMDE4LzA4LzEzLTE2OjQwOjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIwLTA0LTI3VDIwOjM3OjAyKzAyOjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMC0wNC0yN1QyMDo0NjoyMSswMjowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMC0wNC0yN1QyMDo0NjoyMSswMjowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3ZmIxZDFiNS1hMmU3LWVjNGItODg0Zi1hZDk5MzNjMWFhM2IiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OWFhMWFhOWItZWI5MC0wYzQyLTlhNDAtMWIxOGYxYjkzMWJkIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6OWFhMWFhOWItZWI5MC0wYzQyLTlhNDAtMWIxOGYxYjkzMWJkIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo5YWExYWE5Yi1lYjkwLTBjNDItOWE0MC0xYjE4ZjFiOTMxYmQiIHN0RXZ0OndoZW49IjIwMjAtMDQtMjdUMjA6Mzc6MDIrMDI6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE5IChXaW5kb3dzKSIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6N2ZiMWQxYjUtYTJlNy1lYzRiLTg4NGYtYWQ5OTMzYzFhYTNiIiBzdEV2dDp3aGVuPSIyMDIwLTA0LTI3VDIwOjQ2OjIxKzAyOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+vHZnmgAAAkxJREFUOMu1k02L01AUhs9GxA9EREHc+AtcirhxUOpCf4FLdwqj6EZ07Y9Q0IUDIrgeF65VkKmV6bTNpO00/bBp2twmuWlz8918eG5WThs6M0w9cEgvvHn65j3nQpqm8L9638E0zYeU0nOe54LrujAaDcGaTsHHc7fTBrnfz3TUpECpAZ7ngaZrINZFmKLOcRyYTCYg1GqLcELIZhRFXd/3XqDwtCz3YYrilcDR6ckkSVJecRzPLMvasBm75To2SK2948EtCyMI/MfpXEXRrK4M5Jd/er0zSRKDYRpHh0v1JgjlCti2raQ5NcPC2DYRfENHKJ/L4TNXVRgOFJ7z3XRJ8eiCIBB8339ExuRSeaecQZfCwzAENJc5cl3naxwn6UGF+hTdv0fntxljfOPy4fxTeYdhAD++f4PdWvXEdunXWVEUruyKtbXRUHmga+PXRB19QCNdHPq+P8Kzjc7fVCuVwuJAMTeGHUcR/C6VoNmoX94q/rzakvauNZr16xpR7yP8lUbIJ4TL83CMazQxJxuVncq9BXiv18takiTcHOvL/Mt5hUZSXdPeor7A46SGAbVqdTEWZaiAPJBBJWrhIGgYhNu4ik+08fhCQxSzQeKAwaQ0H95oiiAIVS7Sc13GUYpxvEN3a3w2uLKArqHTbmeruBTOHAZB4K/nbEQHXT7FmVzk62YgmF8i/vvQcBSc+uf6R45jf0TATRch3CWzrOxWUkM/OrzVan3Gp4aiZ4xZ58lYzQA+AvnzWPBices5Or7Dp45w0A1tdfBV918SOwMSMlt3aQAAAABJRU5ErkJggg=="
                   /></i>
                 </button>
+                <button
+                  @click="showEmotesMenu = !showEmotesMenu"
+                  class="btn-small btn-emotes waves-effect waves-light purple darken-4"
+                  type="button"
+                >
+                  <i class="material-icons">&#128517;</i>
+                </button>
+
+                <div :class="{ open: showEmotesMenu }" class="emotes-menu">
+                  <div
+                    v-if="emotes.data && 'global' in emotes.data"
+                    class="menu-emotes"
+                  >
+                    <p>global</p>
+                    <div class="emotes-list">
+                      <img
+                        v-for="(emote, i) in emotes.data.global"
+                        :key="i"
+                        :src="
+                          'https:' +
+                          String(emotes.urlTemplate)
+                            .replace('{{id}}', emote.id)
+                            .replace('{{image}}', '1x')
+                        "
+                        @click="addToMessage(emote.code)"
+                        class="emote link"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    v-if="emotes.data && currentChannel in emotes.data"
+                    class="menu-emotes"
+                  >
+                    <p>{{ currentChannel }}</p>
+                    <div class="emotes-list">
+                      <img
+                        v-for="(emote, i) in emotes.data[currentChannel]"
+                        :key="i"
+                        :src="
+                          'https:' +
+                          String(emotes.urlTemplate)
+                            .replace('{{id}}', emote.id)
+                            .replace('{{image}}', '1x')
+                        "
+                        @click="addToMessage(emote.code)"
+                        class="emote link"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -478,6 +529,7 @@ export default {
         __keywords: '',
       },
       showAdvancedOptions: false,
+      showEmotesMenu: false,
       loggedIn: false,
       isConnected: false,
       disableLogin: false,
@@ -538,6 +590,7 @@ export default {
       }
     },
     pickChannel(channel) {
+      this.showEmotesMenu = false
       this.currentChannel = channel
       if (this.options && this.options['__streampreview']) {
         this.dragStreamPreview()
@@ -670,6 +723,16 @@ export default {
         newMessage = newMessage.replace(new RegExp(codeRegExp, 'g'), image)
       })
       return newMessage
+    },
+    addToMessage(text) {
+      this.input[this.currentChannel] += ` ${text} `
+      this.$forceUpdate()
+      try {
+        this.$el.querySelector('#input_message_' + this.currentChannel).focus()
+      } catch (e) {
+        // empty
+      }
+      this.showEmotesMenu = false
     },
     versionClick() {
       ipcRenderer.send('dev:openDevTools', {})
@@ -966,7 +1029,7 @@ body,
   display: inline-grid;
 }
 #swipe-notifications .input-field {
-  display: none;
+  display: none !important;
 }
 .relative {
   position: relative;
@@ -1028,6 +1091,36 @@ input,
   line-height: 28px;
   font-size: 13px;
   padding: 0 10px;
+}
+.btn-emotes {
+  position: relative;
+}
+.emotes-menu {
+  display: none;
+  position: absolute;
+  border: 1px solid #313131;
+  background: #252525;
+  padding: 0 10px;
+  top: -253px;
+  left: -78px;
+  height: 250px;
+  overflow-y: auto;
+  width: 170px;
+  z-index: 1;
+}
+.emotes-menu.open {
+  display: block;
+}
+.emotes-menu .emote.link {
+  margin: 1px 2px;
+}
+.btn-emotes i {
+  font-size: 13px;
+  filter: grayscale(1);
+}
+.flow-root {
+  display: table !important;
+  display: flow-root !important;
 }
 .input-field .prefix.active {
   color: #9b6aff;
