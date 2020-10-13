@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, Menu, BrowserWindow, Tray, ipcMain } from 'electron'
+import { app, Menu, BrowserWindow, Tray, session, ipcMain } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
@@ -171,6 +171,47 @@ function createMainWindow() {
     width: 1100,
     height: 685,
   })
+
+  // Fix twitch.tv embeds (iframes)
+  session.defaultSession.webRequest.onBeforeRequest(
+    {
+      urls: ['https://embed.twitch.tv/*channel=*'],
+    },
+    (details, cb) => {
+      let redirectURL = details.url
+      let params = new URLSearchParams(
+        redirectURL.replace('https://embed.twitch.tv/', '')
+      )
+      if (params.get('parent') != '') {
+        cb({})
+        return
+      }
+      params.set('parent', 'locahost')
+      params.set('referrer', 'https://localhost/')
+      redirectURL = 'https://embed.twitch.tv/?' + params.toString()
+      //console.log('Adjust to', redirectURL)
+      cb({
+        cancel: false,
+        redirectURL,
+      })
+    }
+  )
+  // works for dumb iFrames
+  session.defaultSession.webRequest.onHeadersReceived(
+    {
+      urls: ['https://player.twitch.tv/*', 'https://embed.twitch.tv/*'],
+    },
+    (details, cb) => {
+      let responseHeaders = details.responseHeaders
+      //console.log('headers', details.url, responseHeaders)
+      delete responseHeaders['Content-Security-Policy']
+      //console.log(responseHeaders);
+      cb({
+        cancel: false,
+        responseHeaders,
+      })
+    }
+  )
 
   const window = new BrowserWindow({
     webPreferences: { nodeIntegration: true },
