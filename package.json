@@ -36,7 +36,7 @@
     "electron-log": "^4.1.1",
     "electron-store": "^5.1.1",
     "electron-updater": "^4.2.5",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "source-map-support": "^0.5.19",
     "tmi.js": "^1.5.0",
     "underscore": "^1.10.2",
