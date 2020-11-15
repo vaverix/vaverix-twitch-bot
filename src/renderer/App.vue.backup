@@ -116,18 +116,12 @@
         </iframe>
       </div>
       <div id="chat-container" class="row full-height">
-        <div class="full-height chat-left">
+        <div class="full-height col col-main s8">
           <ul id="tabs-swipe" class="tabs">
             <li class="tab col s3 purple darken-4">
               <a class="waves-effect waves-light active">
                 {{ '#' + currentChannel }}
               </a>
-            </li>
-            <li class="settings pull-right x-small link">
-              <img
-                @click="showAdvancedOptions = true"
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAACF0lEQVRIibWVS4iPURjGf/4uI0qoYVhYjNtKlmZCipodKbcVk6bE1NREMVYWs2XBRhlKWM+4FFI2FpKN2LhusJgQY+FghEev3q+OM+f7/t+Ep97+5/zPe57nPc93LvxvTJHUTKIH6LBc4BFwalI1hRAwkZLo0ETsqMj/I4y7kegtA84CvcB0YG+mpm6gBdgGnPPV1VrBSklfo3rfZaov8D7pbyhbQSEwR9KnCsI6aK+yaLbH32BBbm4hMAocyow/B3YDi4E29/1+Js921r0qAcPMZMyIVgCXvIA3wDCwBhhJcmcB84GpuY+8X9LrxONvkuY12YZvkzlXJLXlPnLu+12usc9Peu5nSZskdUkalPRU0hNJDROYBvxMrDK8yPmZ4KV3+4HbQHwldDvvb+KU3NBeQ2Cp/94C9kX/HwAuAKuBm2ZRn6SxxKJxPxtVFn3xXGtfi+Zel7THDq3ZXxy0FknHEpE7FeQjntMpaXnZIQwhXCzsGQfGEgvWAw+BXcBCoBXYAtwFtkbjzypsvFGsYFGNq+BH1LbKZ3j7saTeaOyj29QfQmgUAnPd9zpYF5G/cssGvX/U7Z5w2VmskvQ9EviQEeuKyEd93pD3D1fdpvGVfV5Sn1dyJiI/7jlm1VVJPZKGy8jLBNJYGwls9jAclHTa2wNVL1ozAYudkk7487kksexIsyezzqOfYiOwHXgADE128r8F8Auf8lu8o7p4/gAAAABJRU5ErkJggg=="
-              />
             </li>
           </ul>
           <div
@@ -138,8 +132,7 @@
               :id="'scrollable-' + currentChannel"
               @click="showEmotesMenu = false"
               @scroll.passive="onScroll"
-              :class="{ 'with-input': currentChannel != 'notifications' }"
-              class="row scrollable with-chat"
+              class="row scrollable with-input"
             >
               <div
                 v-for="(item, i) in (currentChannel == 'notifications' ? notifications : messages[currentChannel])"
@@ -163,15 +156,9 @@
                 ></span>
                 <div class="datetime">{{ item.datetime }}</div>
               </div>
-              <img
-                v-if="isAutoScrollAllowed()"
-                @click="enableAutoScroll()"
-                class="autoscroll"
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAADpklEQVRIia2Wb2xTVRjGn9u1nclCtgBzozFsgjNDQrqIZgs6TIghxuESjR8Qv2zRBJWYgX/iH3AzwgcSPyhIyHAiZKgQJXMjsRPN4iBK5iRxYrMMNrsJo1M7tnVb17vu3vOQc3q6aSt0YTxJ29tz3vN77jn3Pe89hogJGDCgRAACwB0ALMD63oK4KB7+ocWqDIX4gGliGQkniaH8fMNfXp5xOqfG3WJ49HhTM2ZxhMEpzsEdGg4gUIVtbW0zW7xe1zqvF8jMBVAAwAUgCIgg4PcDPT3oXrkSJ9cewW4shoUZAPacCcS4AMcJRgiSoI/LD9w52dp8P8lTTK9fyLOPkgfzp3rYwPWKIQh544wS6msW/jPvrUUgMvXmPMDJ+pysRYBs4BOKFSVERACc0fAO5tYiMMmmW4AnNDBrUq6YppyBiBscXcEfp3cuAJ7Qd+Qe9+Ao/2C25Cr439tYdXTFbYBr/fok6SvjQWUgrgp8sty6xNbbZ8AR8otimna3nWNM7DRL+7ozO0qasDAJneZa/dVAOBqtc3R2imeLilLRsV0Ajs/D0g+EX01tvvtB4Ny5WIWjt9cuySpIDXCvBuq29GNk+03gXwJ1a/qRlfXfu1daD7hcziWoL5zou+GGmiQ/LRRs35Da9ddL5G7XFbJLN9hJARGyuSwSdJDMUNs/SaGXgX/eAKr7DRgGcHwVgMl4TOcmoLUV2BW7C7gAdD31P7PLABwOOJyWZYUQRGFyf+4OoHEjsLQMeLwDGN0BHF5tIzs7A3l5QFUAuFYDHDoUxNunPKlLFASGhxnF16WRI3bdjTOue7NeCqlmknvjl8eKyBP3kbR0oEgaeIzct2y4C+a70xXnK9Pkdb0uAf743z3uQQ69ePMhwRfI9sem9sMesNF4D4f4exqTb8h6j8kPF4+RH6WJleGlpNVmFahScb6S73y7Lv0gXiR5Nn3Y+GtqJ/vitUgWuxE69y8dv7KgSprQoF7Ok1wVN5jW5bqRa1XHwML4kjH2Cp+fK9fSIPFOaOAmZeK7BfKf5HvOy7y6lW8plvVvgxhBW5t8zI3vLwoFLzwtU2F+7JHt5L4lYU68zq2Kod9ocwambpBGsrOPOe0beKCphOHLcrIya2SWjconSLKX5GfktRry9EPkV2t4gj56k+HyY4hpAYOJI4A+Dbjjl+I3kXvpg1j1mTNWhRAiz+NxLpLbf2yME+FwbLi4OPOnR55zHXY94+pRA6LxEqFOKPIHxHXwh+7fx28d0AAAAABJRU5ErkJggg=="
-              />
             </div>
             <div class="row input-message">
-              <div class="input-left input-field">
+              <div class="col s10 input-field">
                 <input
                   :name="currentChannel"
                   :id="'input_message_' + currentChannel"
@@ -185,7 +172,7 @@
                 />
                 <label for="input_message">message...</label>
               </div>
-              <div class="input-right input-field flow-root">
+              <div class="col s2 input-field flow-root">
                 <button
                   @click="sendMessage(currentChannel)"
                   class="btn-small waves-effect waves-light purple darken-4"
@@ -201,25 +188,9 @@
                   class="btn-small btn-emotes waves-effect waves-light purple darken-4"
                   type="button"
                 >
-                  <i class="material-icons">
-                    <img
-                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAVCAYAAACg/AXsAAAEHElEQVQ4jWVUS0hrVxTdN4leNZFcPzFGUlMNaoIRRY3GBD8d+AGFopNWqFRBEDqRgpMOpPDGbUfCK1IoQqWCkxJE/KBJLMYfKoGINvj/JiHxm2gSjbesU96oBy7JPWftvddee53LxWIx4nmeiCjT4XD8vbS0VJmRkfH09vZGfr8f+6RWqyk1NZU2NjbYf5vNxkkkEkVLS8sHrVb7IyeKIiUSiVa73T57eHgoUygUlJOTQ+FwmJ6fn+nk5IQCgQBFo1Hy+XzU0dFBT09P5HA4yGQyvU9NTZUiSfHc3Nw/W1tbMpVKRTKZjDiOYwFgsre3xx4k1+l0FI/HSRAE8nq9dH9/T6Ojo7/LTk9Pv764uJAVFxfT5eUlOwTw6uqKjo+PqaioiAoLCyk7O5tqamrI7XazfciAdXJyUiJtb2//IRgMloRCIZqfnyeXy8USvb+/0+3tLWVkZFBrayt1dXVRfX09VVdXs+CzszPWLs/zz1JBEH72+XyK3d1d2tzcpEgkwuiazWbSarXU1NREAwMDZDQaKZlMUlZWFlmtVobb3t6m9PT0e9nFxUUSwcgKECb1iXppaSkTGUkh7uPjI72+vjJsc3MzzczMkFwuj8p0Ot213W4vAEVUBmWTyUQVFRVkMBhIKpUy+hAbDwTGRDHyhoYG2tnZScoEQfASUa1EImFgHPT29lJubi57R3X0D80QCJYQHmzy8vJIpVLFOafTOdTS0vIrArq7u2lsbIyB7+7u6OjoiCYmJuj09JQ6OzsZw4WFBTYhpVJJKSkp1NbW9hEj+jA0NCQSkTg5OSliLS8vi/39/WJ5ebmoVqvZ7/j4uOhyucSCggKGlUqlotVqFT0ez/cyCNbY2MjURq8Qt6ysjPr6+qiyspK1AZ9ASFQfHBxkHkpPT2fmS01NDXDxeNzidDrX0tLS0B9Bm/z8fBYAQ8Hu0ODh4YElczqdLDESwHRGo/FLCcdx67W1tX/U1dWxHsEIlQ4PD9kdCQaD7ApgKnK5nAkOUWFE7Eej0VcZnMnz/OL5+fk3iUSCgV9eXlgiJECLYDg7O8tGDJGBu76+ZpeU5/mIBKBYLDb98PDwXSQSCQEAcGZmJrM8WsAoMdqDgwPmamDwrtFo3pRK5REzh0KheDGbzR+J6E8AoQUYVVVVsf5XVlZYZYiOlmEBFFcqlWsmk+laAiFRGctgMPzk9/tjHo+H9vf3aX19nQmI6QEHkeEVjUZDa2trZLFYfsH+fzYlYhQFQTjv6en54ubm5nV1dZWJBxAYQJeSkhLCJwNFLBbLbzab7S+cYcSf8rAFqsFg8LPp6enFUChUBj30ej0bOYRGa2q1enFkZKQNeMT/LwmmBc+Amdvt/tbr9Q6Gw+HPk8lkViAQkOv1+unh4eGveJ4XWQKOo38BBOw4Ao3bCe8AAAAASUVORK5CYII="
-                    />
-                  </i>
+                  <i class="material-icons">&#128517;</i>
                 </button>
-                <button
-                  @click="
-                    options['__streampreview'] = !options['__streampreview']
-                  "
-                  class="btn-small waves-effect waves-light purple darken-4"
-                  type="button"
-                >
-                  <i class="material-icons">
-                    <img
-                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAQCAYAAAD0xERiAAAA30lEQVQ4jWNkYGD4z0AlwAQy5v///xTh69evg13DRC1XjRo2gIYxMzNTzzBREREwTdVEy8IATbSFRUUMGzduYsjKzGSQkpaC2MTIyACCMNtA6tDtBsk/e/6coaS4CKKmsan5//79B/6DwOPHj/8jg/fv34MxPnDt2jWwLVT1JgqA5U8kAHcPiO3k5GJHsqEPHj7UdnNzzwEZcObM2f9nz50DG6aopLT4yNGjbjg11tXWMPDy8jHU1tbCXVZbV1cK9T4GtrG1XfX//39GkLqFCxcwcHNzMxQXFTL8//+fAQDTgckWi8yM8AAAAABJRU5ErkJggg=="
-                    />
-                  </i>
-                </button>
+
                 <div :class="{ open: showEmotesMenu }" class="emotes-menu">
                   <div
                     v-if="emotes.data && 'global' in emotes.data"
@@ -266,125 +237,186 @@
             </div>
           </div>
         </div>
-        <div class="full-height scrollable chat-right">
-          <div class="channel">
-            <span
-              @click="pickChannel('notifications')"
-              class="channel-link link"
-            >
-              <img
-                class="channel-icon channel-icon-notifications"
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABDCAYAAAAs/QNwAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFHGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDUgNzkuMTYzNDk5LCAyMDE4LzA4LzEzLTE2OjQwOjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIwLTExLTExVDA4OjQ2OjEyKzAxOjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMC0xMS0xMVQwODo0OToxOCswMTowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMC0xMS0xMVQwODo0OToxOCswMTowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5MTRiMzU3OS05OTYy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"
-              />
-            </span>
+        <div class="full-height col col-main s4">
+          <h6>Menu</h6>
+          <div class="scrollable half-height">
+            <div class="col s12 channel">
+              <span
+                @click="pickChannel('notifications')"
+                :class="{ active: currentChannel == 'notifications' }"
+                class="link"
+                >#notifications &nbsp;</span
+              >
+            </div>
+            <div v-for="(item, i) in channels" :key="i" class="col s12 channel">
+              <span
+                @click="pickChannel(item)"
+                :class="{
+                  online: joinedChannels.indexOf(item) != -1,
+                  active: currentChannel == item,
+                }"
+                class="link"
+                >#{{ item }} &nbsp;</span
+              >
+              <div class="move-channel">
+                <span
+                  v-if="item != 'vaverix'"
+                  @click="moveChannel(item, 'up')"
+                  class="move-up"
+                  >&uarr;</span
+                >
+                <span
+                  v-if="item != 'vaverix'"
+                  @click="moveChannel(item, 'down')"
+                  class="move-down"
+                  >&darr;</span
+                >
+                <span
+                  v-if="item != 'vaverix'"
+                  @click="removeChannel(item)"
+                  class="delete"
+                  >X</span
+                >
+                <span v-if="item == 'vaverix'">&nbsp;&nbsp;</span>
+              </div>
+            </div>
           </div>
-          <div
-            v-for="(item, i) in channels"
-            :key="i"
-            class="channel"
-            :style="{ backgroundImage: 'url(' + channelImages[item] + ')' }"
-          >
-            <span
-              @click="pickChannel(item)"
-              :class="{
-                online: joinedChannels.indexOf(item) != -1,
-                active: currentChannel == item,
-              }"
-              class="channel-link link"
-            >
-            </span>
+          <div id="add_channel_container" class="add_channel col s12">
+            <div class="row">
+              <div class="input-field col s9">
+                <!--<i class="material-icons prefix">#</i>-->
+                <input
+                  v-model="input['__channel']"
+                  v-on:keyup.enter="addChannel()"
+                  onkeypress="onKeyPressHack(event, this)"
+                  onchange="onKeyPressHack(event, this)"
+                  name="__channel"
+                  id="add_channel"
+                  class="input-small"
+                  type="text"
+                  autocomplete="off"
+                />
+                <label for="add_channel">#channel</label>
+              </div>
+              <div class="input-field col s3">
+                <button
+                  @click="addChannel()"
+                  class="btn-small waves-effect waves-light purple darken-4"
+                  type="button"
+                >
+                  <i class="material-icons">+</i>
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="channel">
-            <span @click="showAddChannelForm = true" class="channel-link link">
-              <img
-                class="channel-icon channel-icon-notifications"
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAeElEQVRIie2WsQ2AMAwEz4gFshOMwArMkDJ7kRWYhRGC0htsQYGE/OUr72vilwWHCm1SXh0F2a306AEAm+JVYLaCgxPwWAEIwHtJoa3AYkxSFw2wFi33RUsXAyx5cil+0fcAb103xa4FiTYNwB8A3qsiK15v03sBJzy4EMRdyCS9AAAAAElFTkSuQmCC"
-              />
+          <h6>
+            Options
+            <span
+              @click="showAdvancedOptions = true"
+              class="pull-right x-small link"
+            >
+              advanced
             </span>
+          </h6>
+          <div class="options">
+            <p>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Scroll messages container to the bottom when a new message appears"
+              >
+                <input
+                  v-model="options['__autoscroll']"
+                  @change="updateOptions()"
+                  type="checkbox"
+                />
+                <span>Auto-scroll to bottom</span>
+              </label>
+            </p>
+            <p>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Hide the app to the Windows tray when it loses focus"
+              >
+                <input
+                  v-model="options['__autohide']"
+                  @change="updateOptions()"
+                  type="checkbox"
+                />
+                <span>Auto-hide to tray</span>
+              </label>
+            </p>
+            <p>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Enable Windows notifications"
+              >
+                <input
+                  v-model="options['__notifications']"
+                  @change="updateOptions()"
+                  type="checkbox"
+                />
+                <span>Notifications</span>
+              </label>
+            </p>
+            <p>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Enable in-app notifications"
+              >
+                <input
+                  v-model="options['__toasts']"
+                  @change="updateOptions()"
+                  type="checkbox"
+                />
+                <span>Toasts</span>
+              </label>
+            </p>
+            <p>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Enable sound que when a new notification appears"
+              >
+                <input
+                  v-model="options['__soundalerts']"
+                  @change="updateOptions()"
+                  type="checkbox"
+                />
+                <span>Sound alerts</span>
+              </label>
+            </p>
+            <p>
+              <label
+                class="tooltipped"
+                data-position="top"
+                data-tooltip="Enable Twitch.tv stream preview (performance and memory heavy feature since it actually loads Twitch player embeded)"
+              >
+                <input
+                  v-model="options['__streampreview']"
+                  @change="updateOptions()"
+                  type="checkbox"
+                />
+                <span>Stream preview</span>
+              </label>
+            </p>
           </div>
         </div>
       </div>
     </div>
     <div v-if="isConnected && showAdvancedOptions" id="advanced-options">
       <div @click="showAdvancedOptions = false" class="link advanced-close">
-        x
+        X
       </div>
       <div class="advanced-wrapper">
         <div>
-          <h6>Settings</h6>
+          <h6>Options</h6>
         </div>
         <div class="options">
-          <div class="options-group display-flex">
-            <label
-              class="tooltipped"
-              data-position="top"
-              data-tooltip="Hide the app to the Windows tray when it loses focus"
-            >
-              <input
-                v-model="options['__autohide']"
-                @change="updateOptions()"
-                type="checkbox"
-              />
-              <span>Auto-hide to tray</span>
-            </label>
-          </div>
-          <div class="options-group display-flex">
-            <label
-              class="tooltipped"
-              data-position="top"
-              data-tooltip="Enable Windows notifications"
-            >
-              <input
-                v-model="options['__notifications']"
-                @change="updateOptions()"
-                type="checkbox"
-              />
-              <span>Notifications</span>
-            </label>
-          </div>
-          <div class="options-group display-flex">
-            <label
-              class="tooltipped"
-              data-position="top"
-              data-tooltip="Enable in-app notifications"
-            >
-              <input
-                v-model="options['__toasts']"
-                @change="updateOptions()"
-                type="checkbox"
-              />
-              <span>Toasts</span>
-            </label>
-          </div>
-          <div class="options-group display-flex">
-            <label
-              class="tooltipped"
-              data-position="top"
-              data-tooltip="Enable sound que when a new notification appears"
-            >
-              <input
-                v-model="options['__soundalerts']"
-                @change="updateOptions()"
-                type="checkbox"
-              />
-              <span>Sound alerts</span>
-            </label>
-          </div>
-          <div class="options-group display-flex">
-            <label
-              class="tooltipped"
-              data-position="top"
-              data-tooltip="Enable Twitch.tv stream preview (performance and memory heavy feature since it actually loads Twitch player embeded)"
-            >
-              <input
-                v-model="options['__streampreview']"
-                @change="updateOptions()"
-                type="checkbox"
-              />
-              <span>Stream preview</span>
-            </label>
-          </div>
-          <div class="options-group text-left">
+          <div class="options-group">
             <label for="__streampreviewmode"
               >How stream preview should look like
             </label>
@@ -429,76 +461,6 @@
               autocomplete="off"
             />
             <label for="__keywords">(seperated by comma ",") </label>
-          </div>
-        </div>
-        <div class="sidepanel">
-          <h6>Channel managment</h6>
-          <ul class="scrollable half-height">
-            <li v-for="(item, i) in channels" :key="i">
-              <span>#{{ item }} &nbsp;</span>
-              <div class="move-channel">
-                <span
-                  v-if="item != 'vaverix'"
-                  @click="moveChannel(item, 'up')"
-                  class="move-up"
-                  >&uarr;</span
-                >
-                <span
-                  v-if="item != 'vaverix'"
-                  @click="moveChannel(item, 'down')"
-                  class="move-down"
-                  >&darr;</span
-                >
-                <span
-                  v-if="item != 'vaverix'"
-                  @click="removeChannel(item)"
-                  class="delete"
-                  >X</span
-                >
-                <span v-if="item == 'vaverix'">&nbsp;&nbsp;</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div v-if="isConnected && showAddChannelForm" id="add_channel_container">
-      <div @click="showAddChannelForm = false" class="link advanced-close">
-        x
-      </div>
-      <div class="advanced-wrapper">
-        <div></div>
-        <div class="options">
-          <div class="options-group">
-            <label for="__channel">
-              <h6>Add channel</h6>
-            </label>
-            <div class="row">
-              <div class="input-field col s9">
-                <!--<i class="material-icons prefix">#</i>-->
-                <input
-                  v-model="input['__channel']"
-                  v-on:keyup.enter="addChannel()"
-                  onkeypress="onKeyPressHack(event, this)"
-                  onchange="onKeyPressHack(event, this)"
-                  name="__channel"
-                  id="add_channel"
-                  class="input-small"
-                  type="text"
-                  autocomplete="off"
-                />
-                <label for="add_channel">#channel</label>
-              </div>
-              <div class="input-field col s3">
-                <button
-                  @click="addChannel()"
-                  class="btn-small waves-effect waves-light purple darken-4"
-                  type="button"
-                >
-                  <i class="material-icons">+</i> Add
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -546,7 +508,6 @@ export default {
       messages: {},
       badges: {},
       emotes: {},
-      channelImages: {},
       notifications: [
         {
           channel: 'notifications',
@@ -568,7 +529,6 @@ export default {
         __keywords: '',
       },
       showAdvancedOptions: false,
-      showAddChannelForm: false,
       showEmotesMenu: false,
       loggedIn: false,
       isConnected: false,
@@ -620,7 +580,6 @@ export default {
         String(this.input['__channel']).replace('#', '')
       )
       this.input['__channel'] = ''
-      this.showAddChannelForm = false
     },
     removeChannel(channel) {
       if (!channel || String(channel).length < 3) return
@@ -653,20 +612,6 @@ export default {
       if (this.options['__streampreview']) {
         this.dragStreamPreview()
       }
-    },
-    isAutoScrollAllowed() {
-      if (this.options['__autoscroll']) return false
-      if (this.currentChannel == 'notifications') {
-        return this.notifications.length > 0 ? true : false
-      }
-      return this.messages[this.currentChannel] &&
-        this.messages[this.currentChannel].length > 0
-        ? true
-        : false
-    },
-    enableAutoScroll() {
-      this.options['__autoscroll'] = true
-      this.updateOptions()
     },
     scrollBottom(div) {
       if (!this.options || !this.options['__autoscroll']) return
@@ -951,9 +896,6 @@ export default {
       //console.log(item)
       self.emotes = item
     })
-    ipcRenderer.on('channel:channelImages', (e, item) => {
-      self.channelImages = item
-    })
     ipcRenderer.on('channel:message', (e, item) => {
       if (!self.loggedIn) return
       let channel = item.channel
@@ -1046,20 +988,8 @@ body,
 .full-height {
   height: 100%;
 }
-.display-flex {
-  display: flex;
-}
 .display-contents {
   display: contents;
-}
-.input-left {
-  float: left;
-  width: calc(100% - 140px);
-}
-.input-right {
-  float: right;
-  padding-left: 10px;
-  width: 140px;
 }
 .input-field.col label {
   display: inline-block !important;
@@ -1106,6 +1036,7 @@ body,
 }
 .scrollable {
   position: relative;
+  padding: 20px;
   height: 88vh;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -1113,7 +1044,7 @@ body,
 .scrollable.with-input {
   height: 75vh;
   height: calc(100vh - 155px);
-  padding: 0;
+  padding: 20px 20px 0 20px;
   margin-bottom: 0;
 }
 .scrollable.half-height {
@@ -1121,93 +1052,18 @@ body,
   padding-left: 10px;
   height: 33vh;
 }
-.scrollable.full-height {
-  height: 99%;
-}
-.sidepanel {
-  background: #191919;
-  padding: 8px 11px 28px 7px;
-  position: absolute;
-  top: 30%;
-  right: 76%;
-  width: 20%;
-  min-width: 222px;
-  max-width: 333px;
-}
-.sidepanel ul {
-  padding: 0 30px 0 0;
-  margin: 0;
-}
-.sidepanel li {
-  border-bottom: 1px solid #3c3c3c;
-  text-align: left;
-  margin: 5px 0;
-}
 .datetime {
   color: grey;
   font-size: 11px;
 }
-.streampreview-docked .chat-left {
-  padding-left: 10px;
-}
-.chat-left {
-  float: left;
-  width: 98%;
-  width: calc(100% - 75px);
-}
-.chat-right {
-  background: #1f1f1f;
-  float: right;
-  width: 74px;
-}
-.chat-right.scrollable {
-  padding: 0 0 0 14px;
-  margin-right: -10px;
-}
-.chat-right.scrollable::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
-.channel-link {
-  display: block;
-  position: absolute;
-  border-radius: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100%;
-  width: 100%;
-}
-.channel-link:hover {
-  background: rgba(0, 0, 0, 0.3);
-}
-.channel-link.active {
-  background: #8000ff83;
-}
-.channel-icon-notifications {
-  display: block;
-  position: relative;
-  margin: 21% auto auto auto;
-  left: 0;
-  right: 0;
-  height: 24px;
-  width: 24px;
-}
 .channel {
-  float: right;
   font-size: 12px;
   font-weight: bold;
-  background: #2f2f2f;
-  background-size: 120%;
-  background-position: center;
+  background: #ffffff08;
   border-radius: 2px;
   padding: 5px 10px !important;
   position: relative;
-  margin: 0px 14px 14px 0px;
-  border-radius: 100%;
-  height: 42px;
-  width: 42px;
+  margin: 5px 0;
 }
 .channel span.active {
   color: white;
@@ -1259,6 +1115,7 @@ input,
   margin: 1px 2px;
 }
 .btn-emotes i {
+  font-size: 13px;
   filter: grayscale(1);
 }
 .flow-root {
@@ -1289,7 +1146,7 @@ input,
   position: absolute;
   top: -2px;
   right: -2px;
-  background: #26a69a;
+  background: #007700;
   border-radius: 30px;
   display: inline-block;
   height: 4px;
@@ -1304,6 +1161,7 @@ input,
 }
 .delete {
   color: #fff;
+  font-size: 11px;
   font-weight: bold;
   position: relative;
   top: -2px;
@@ -1345,35 +1203,13 @@ input,
 .player-ui {
   display: none !important;
 }
-.text-left {
-  text-align: left;
-}
-.text-center {
-  text-align: center;
-}
 .pull-right {
   float: right;
 }
 .x-small {
   font-size: 12px;
 }
-.settings {
-  position: relative;
-  top: 4px;
-  right: 4px;
-  height: 24px;
-  width: 24px;
-}
-.autoscroll {
-  cursor: pointer;
-  display: inline-block;
-  position: fixed;
-  right: 10%;
-  bottom: 16%;
-  z-index: 1;
-}
 #advanced-options,
-#add_channel_container,
 .preloader {
   display: inline-grid;
   background: rgba(0, 0, 0, 0.97);
@@ -1393,13 +1229,13 @@ input,
   text-align: center;
 }
 .advanced-wrapper .options-group {
-  background: #191919;
-  margin: 2px auto;
-  padding: 15px 20px;
+  margin: 0 auto;
+  padding: 10px 20px;
   width: 42%;
+  border-top: 1px solid #292929;
 }
 .advanced-close {
-  font-size: 22px;
+  font-size: 14px;
   position: absolute;
   top: 13px;
   right: 25px;
@@ -1417,15 +1253,15 @@ input,
   left: calc(50% - 25px);
   top: calc(86% - 25px);
 }
-.swipe-tab-content {
-  background: #1b1b1b;
-}
 #toast-container {
   top: 7% !important;
   left: 5% !important;
   right: auto !important;
   bottom: auto !important;
   max-width: 90% !important;
+}
+#add_channel_container {
+  margin: 10px 0;
 }
 #add_channel_container .row,
 #add_channel_container .input-field {
@@ -1434,11 +1270,11 @@ input,
 #main-container.streampreview-docked #stream-preview {
   float: left;
   height: 100%;
-  width: 59%;
+  width: 39%;
 }
 #main-container.streampreview-docked #chat-container {
   float: left;
-  width: 40%;
+  width: 60%;
 }
 #stream-preview {
   border: 1px solid #444444;
@@ -1486,7 +1322,7 @@ input,
   background: #8000ff;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #333;
   border: 0px none #ffffff;
   border-radius: 50px;
 }

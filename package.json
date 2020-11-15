@@ -2,7 +2,7 @@
   "name": "vaverix-twitch-bot",
   "description": "Desktop application that allows you to log-in into multiple Twitch.tv channels at once. It also notifies you when someone mentions you in any channel you choose and has couple of other extra features.",
   "author": "vaverix",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "license": "MIT",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -40,9 +40,10 @@
     "source-map-support": "^0.5.19",
     "tmi.js": "^1.5.0",
     "underscore": "^1.10.2",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-loader": "^15.9.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.12",
+    "websocket": "^1.0.32"
   },
   "devDependencies": {
     "electron": "^8.5.2",
