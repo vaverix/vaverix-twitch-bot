@@ -12,6 +12,8 @@ Doesn't matter if you wanna grind channel points or just be aware if someone is 
 
 ![Screenshot](screen3.png)
 
+![Screenshot](screen4.png)
+
 ## Getting Started
 
 ### Installation

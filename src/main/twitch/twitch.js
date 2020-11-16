@@ -4,6 +4,7 @@ import tmi from 'tmi.js'
 //import discord from 'discord.js'
 import { request, kraken, twitchNameToUser } from '../functions'
 import { startTwitchBonusCollector } from './twitchBonusCollector'
+import { floatingWindow } from './floatingWindow'
 
 const startTwitchApp = (appData) => {
   const getChannels = () => {
@@ -282,6 +283,9 @@ const startTwitchApp = (appData) => {
     appData.options = underscore.defaults(data, appData.optionsDefaults)
     appData.mainWindow.webContents.send('options:list', appData.options)
     appData.store.set('options', appData.options)
+  })
+  ipcMain.on('extra:floatingWindow', (e, channel) => {
+    floatingWindow(channel, appData)
   })
   ipcMain.on('dev:openDevTools', () => {
     appData.mainWindow.webContents.openDevTools()

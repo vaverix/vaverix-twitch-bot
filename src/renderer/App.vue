@@ -208,9 +208,7 @@
                   </i>
                 </button>
                 <button
-                  @click="
-                    options['__streampreview'] = !options['__streampreview']
-                  "
+                  @click="toggleStreamPreview(currentChannel)"
                   class="btn-small waves-effect waves-light purple darken-4"
                   type="button"
                 >
@@ -307,7 +305,9 @@
     </div>
     <div v-if="isConnected && showAdvancedOptions" id="advanced-options">
       <div @click="showAdvancedOptions = false" class="link advanced-close">
-        x
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF7GlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDUgNzkuMTYzNDk5LCAyMDE4LzA4LzEzLTE2OjQwOjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIwLTExLTE2VDA1OjU2OjM0KzAxOjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMC0xMS0xNlQwNTo1ODo1NyswMTowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMC0xMS0xNlQwNTo1ODo1NyswMTowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2M2I3NDc1MC0zZjQ0LTNiNDMtOTU5My1mYmJiZWM4NmNjYTIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NWNkYzEzOTYtNWRkOS1lMzRmLWE1NTAtNTBmZTE1N2VmNDE2IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6NWNkYzEzOTYtNWRkOS1lMzRmLWE1NTAtNTBmZTE1N2VmNDE2Ij4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo1Y2RjMTM5Ni01ZGQ5LWUzNGYtYTU1MC01MGZlMTU3ZWY0MTYiIHN0RXZ0OndoZW49IjIwMjAtMTEtMTZUMDU6NTY6MzQrMDE6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE5IChXaW5kb3dzKSIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6NjNiNzQ3NTAtM2Y0NC0zYjQzLTk1OTMtZmJiYmVjODZjY2EyIiBzdEV2dDp3aGVuPSIyMDIwLTExLTE2VDA1OjU4OjU3KzAxOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8++p4DjAAAAOdJREFUOBFj+P//PwMaZsMiBsJc2MTRBZyAOAyHAfFArInPADEgfvsfAmzQFIZDxc8AsQA2A8yB+OF/BPgGdQ1ILug/KrgAxAroBlz5jwmeA3ENEH/GIrcK3QBXIH78nzjwAIgNsYWBBRB/JKAZZIk+vliQBOK7ODRfB2JWQtEIMv0JDgPuAbE0PgN8gPg3AS+AvGiPbgAjEEdDo44Y8B6IXdANOINF4U0gjkRLHzCwAt0LqmiGvAZiI6icLZrr9gOxMLYw4AHi+9BwUEULLBuo5sNAzIEvFgKAOA1HZioAYmNC0UgyBgBq02dEp3OFYgAAAABJRU5ErkJggg=="
+        />
       </div>
       <div class="advanced-wrapper">
         <div>
@@ -395,10 +395,15 @@
                   onchange="onKeyPressHack(event, this, true)"
                   class="with-gap"
                   name="__streampreviewmode"
-                  value="inApp"
+                  value="floatingWindow"
                   type="radio"
                 />
-                <span>In-app Mini preview</span>
+                <span
+                  >Floating Window
+                  <span class="badge text-black light-green accent-4"
+                    >try now!</span
+                  ></span
+                >
               </label>
             </p>
             <p>
@@ -412,6 +417,24 @@
                   type="radio"
                 />
                 <span>Docked</span>
+              </label>
+            </p>
+            <p>
+              <label>
+                <input
+                  v-model="options['__streampreviewmode']"
+                  onchange="onKeyPressHack(event, this, true)"
+                  class="with-gap"
+                  name="__streampreviewmode"
+                  value="inApp"
+                  type="radio"
+                />
+                <span
+                  >In-app Mini preview
+                  <span class="badge text-white red darken-4"
+                    >obsolete</span
+                  ></span
+                >
               </label>
             </p>
           </div>
@@ -432,7 +455,7 @@
           </div>
         </div>
         <div class="sidepanel">
-          <h6>Channel managment</h6>
+          <h6>Channel management</h6>
           <ul class="scrollable half-height">
             <li v-for="(item, i) in channels" :key="i">
               <span>#{{ item }} &nbsp;</span>
@@ -453,7 +476,7 @@
                   v-if="item != 'vaverix'"
                   @click="removeChannel(item)"
                   class="delete"
-                  >X</span
+                  >x</span
                 >
                 <span v-if="item == 'vaverix'">&nbsp;&nbsp;</span>
               </div>
@@ -464,7 +487,9 @@
     </div>
     <div v-if="isConnected && showAddChannelForm" id="add_channel_container">
       <div @click="showAddChannelForm = false" class="link advanced-close">
-        x
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF7GlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDUgNzkuMTYzNDk5LCAyMDE4LzA4LzEzLTE2OjQwOjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIwLTExLTE2VDA1OjU2OjM0KzAxOjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMC0xMS0xNlQwNTo1ODo1NyswMTowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMC0xMS0xNlQwNTo1ODo1NyswMTowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2M2I3NDc1MC0zZjQ0LTNiNDMtOTU5My1mYmJiZWM4NmNjYTIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NWNkYzEzOTYtNWRkOS1lMzRmLWE1NTAtNTBmZTE1N2VmNDE2IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6NWNkYzEzOTYtNWRkOS1lMzRmLWE1NTAtNTBmZTE1N2VmNDE2Ij4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo1Y2RjMTM5Ni01ZGQ5LWUzNGYtYTU1MC01MGZlMTU3ZWY0MTYiIHN0RXZ0OndoZW49IjIwMjAtMTEtMTZUMDU6NTY6MzQrMDE6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE5IChXaW5kb3dzKSIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6NjNiNzQ3NTAtM2Y0NC0zYjQzLTk1OTMtZmJiYmVjODZjY2EyIiBzdEV2dDp3aGVuPSIyMDIwLTExLTE2VDA1OjU4OjU3KzAxOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8++p4DjAAAAOdJREFUOBFj+P//PwMaZsMiBsJc2MTRBZyAOAyHAfFArInPADEgfvsfAmzQFIZDxc8AsQA2A8yB+OF/BPgGdQ1ILug/KrgAxAroBlz5jwmeA3ENEH/GIrcK3QBXIH78nzjwAIgNsYWBBRB/JKAZZIk+vliQBOK7ODRfB2JWQtEIMv0JDgPuAbE0PgN8gPg3AS+AvGiPbgAjEEdDo44Y8B6IXdANOINF4U0gjkRLHzCwAt0LqmiGvAZiI6icLZrr9gOxMLYw4AHi+9BwUEULLBuo5sNAzIEvFgKAOA1HZioAYmNC0UgyBgBq02dEp3OFYgAAAABJRU5ErkJggg=="
+        />
       </div>
       <div class="advanced-wrapper">
         <div></div>
@@ -677,6 +702,17 @@ export default {
         }
       })
     },
+    toggleStreamPreview(channel) {
+      if (
+        this.options &&
+        this.options['__streampreviewmode'] &&
+        this.options['__streampreviewmode'] == 'floatingWindow'
+      ) {
+        ipcRenderer.send('extra:floatingWindow', channel || this.currentChannel)
+      } else {
+        this.options['__streampreview'] = !this.options['__streampreview']
+      }
+    },
     showNotification(title, message) {
       if (this.options && this.options['__notifications']) {
         new Notification(title, { body: message })
@@ -856,7 +892,7 @@ export default {
   },
   mounted() {
     // save 'this' keyword for future reference
-    let self = this
+    const self = this
     // add materialize.css scripts
     const materializeScript = document.createElement('script')
     materializeScript.setAttribute('type', 'text/javascript')
@@ -1143,6 +1179,13 @@ body,
   text-align: left;
   margin: 5px 0;
 }
+.sidepanel > ul > li > span {
+  display: inline-block;
+  width: calc(100% - 42px);
+  height: 21px;
+  overflow: hidden;
+  word-break: break-all;
+}
 .datetime {
   color: grey;
   font-size: 11px;
@@ -1345,6 +1388,12 @@ input,
 .player-ui {
   display: none !important;
 }
+.text-white {
+  color: white !important;
+}
+.text-black {
+  color: black !important;
+}
 .text-left {
   text-align: left;
 }
@@ -1395,8 +1444,12 @@ input,
 .advanced-wrapper .options-group {
   background: #191919;
   margin: 2px auto;
-  padding: 15px 20px;
+  padding: 12px 20px;
   width: 42%;
+}
+.advanced-wrapper .options-group label > span {
+  display: inline-block;
+  width: 100%;
 }
 .advanced-close {
   font-size: 22px;
@@ -1419,6 +1472,11 @@ input,
 }
 .swipe-tab-content {
   background: #1b1b1b;
+}
+span.badge {
+  font-size: 0.7rem;
+  padding: 0 5px;
+  min-width: 2.3rem;
 }
 #toast-container {
   top: 7% !important;

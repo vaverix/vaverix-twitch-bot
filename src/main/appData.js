@@ -7,6 +7,7 @@ appData.store = new Store()
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 appData.mainWindow
+appData.floatingWindow
 appData.tray
 
 // main app variables
