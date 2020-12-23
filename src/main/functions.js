@@ -9,13 +9,17 @@ const formQuerystring = (qs = {}) => {
 const request = ({
   base = '',
   endpoint = '',
-  qs,
+  qs = {},
   headers = {},
   method = 'get',
+  body = '',
 }) => {
   let opts = {
     method,
     headers,
+  }
+  if (body && body.length > 0) {
+    opts.body = body
   }
   return fetch(base + endpoint + '?' + formQuerystring(qs), opts).then((res) =>
     res.json()
@@ -29,6 +33,20 @@ const kraken = (opts) => {
       'Client-ID': '4g5an0yjebpf93392k4c5zll7d7xcec',
       Accept: 'application/vnd.twitchtv.v5+json',
     },
+  }
+  return request(Object.assign(defaults, opts))
+}
+
+const gql = (clientId, oAuth, opts) => {
+  let defaults = {
+    base: 'https://gql.twitch.tv/gql',
+    headers: {
+      Authorization: oAuth || 'OAuth vjee4wlzxs9btbg3jqyx4f3md9tknp',
+      'Client-ID': clientId || 'kimne78kx3ncx6brgo4mv6wki5h1ko',
+      'Content-Type': 'text/plain;charset=UTF-8',
+    },
+    method: 'post',
+    body: '',
   }
   return request(Object.assign(defaults, opts))
 }
@@ -51,4 +69,4 @@ const nonce = (length) => {
   return text
 }
 
-export { formQuerystring, request, kraken, twitchNameToUser, nonce }
+export { formQuerystring, request, kraken, gql, twitchNameToUser, nonce }

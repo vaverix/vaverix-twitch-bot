@@ -142,7 +142,9 @@
               class="row scrollable with-chat"
             >
               <div
-                v-for="(item, i) in (currentChannel == 'notifications' ? notifications : messages[currentChannel])"
+                v-for="(item, i) in currentChannel == 'notifications'
+                  ? notifications
+                  : messages[currentChannel]"
                 :key="i"
                 class="col s12 message"
               >
@@ -314,7 +316,21 @@
           <h6>Settings</h6>
         </div>
         <div class="options">
-          <div class="options-group display-flex">
+          <div class="options-group text-left display-flex">
+            <label
+              class="tooltipped"
+              data-position="top"
+              data-tooltip="Auto start the app with the operation system"
+            >
+              <input
+                v-model="options['__autostart']"
+                @change="updateOptions()"
+                type="checkbox"
+              />
+              <span>Auto-start with the OS</span>
+            </label>
+          </div>
+          <div class="options-group text-left display-flex">
             <label
               class="tooltipped"
               data-position="top"
@@ -328,7 +344,7 @@
               <span>Auto-hide to tray</span>
             </label>
           </div>
-          <div class="options-group display-flex">
+          <div class="options-group text-left display-flex">
             <label
               class="tooltipped"
               data-position="top"
@@ -342,7 +358,7 @@
               <span>Notifications</span>
             </label>
           </div>
-          <div class="options-group display-flex">
+          <div class="options-group text-left display-flex">
             <label
               class="tooltipped"
               data-position="top"
@@ -356,7 +372,7 @@
               <span>Toasts</span>
             </label>
           </div>
-          <div class="options-group display-flex">
+          <div class="options-group text-left display-flex">
             <label
               class="tooltipped"
               data-position="top"
@@ -370,18 +386,23 @@
               <span>Sound alerts</span>
             </label>
           </div>
-          <div class="options-group display-flex">
+          <div class="options-group text-left display-flex">
             <label
               class="tooltipped"
               data-position="top"
-              data-tooltip="Enable Twitch.tv stream preview (performance and memory heavy feature since it actually loads Twitch player embeded)"
+              data-tooltip="Enable collecting channel-points"
             >
               <input
-                v-model="options['__streampreview']"
+                v-model="options['__twitchBonusCollector']"
                 @change="updateOptions()"
                 type="checkbox"
               />
-              <span>Stream preview</span>
+              <span
+                >Auto-collect channel points
+                <span class="badge text-white orange accent-4"
+                  >warning: it may lead to BAN!</span
+                ></span
+              >
             </label>
           </div>
           <div class="options-group text-left">
@@ -400,7 +421,7 @@
                 />
                 <span
                   >Floating Window
-                  <span class="badge text-black light-green accent-4"
+                  <span class="badge text-white light-green accent-4"
                     >try now!</span
                   ></span
                 >
@@ -528,6 +549,16 @@
         </div>
       </div>
     </div>
+    <div v-if="showCLogWnd" id="changeLog">
+      <div @click="showCLogWnd = false" class="link advanced-close">
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAF7GlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDUgNzkuMTYzNDk5LCAyMDE4LzA4LzEzLTE2OjQwOjIyICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIwLTExLTE2VDA1OjU2OjM0KzAxOjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMC0xMS0xNlQwNTo1ODo1NyswMTowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMC0xMS0xNlQwNTo1ODo1NyswMTowMCIgZGM6Zm9ybWF0PSJpbWFnZS9wbmciIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo2M2I3NDc1MC0zZjQ0LTNiNDMtOTU5My1mYmJiZWM4NmNjYTIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NWNkYzEzOTYtNWRkOS1lMzRmLWE1NTAtNTBmZTE1N2VmNDE2IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6NWNkYzEzOTYtNWRkOS1lMzRmLWE1NTAtNTBmZTE1N2VmNDE2Ij4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo1Y2RjMTM5Ni01ZGQ5LWUzNGYtYTU1MC01MGZlMTU3ZWY0MTYiIHN0RXZ0OndoZW49IjIwMjAtMTEtMTZUMDU6NTY6MzQrMDE6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE5IChXaW5kb3dzKSIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6NjNiNzQ3NTAtM2Y0NC0zYjQzLTk1OTMtZmJiYmVjODZjY2EyIiBzdEV2dDp3aGVuPSIyMDIwLTExLTE2VDA1OjU4OjU3KzAxOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOSAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8++p4DjAAAAOdJREFUOBFj+P//PwMaZsMiBsJc2MTRBZyAOAyHAfFArInPADEgfvsfAmzQFIZDxc8AsQA2A8yB+OF/BPgGdQ1ILug/KrgAxAroBlz5jwmeA3ENEH/GIrcK3QBXIH78nzjwAIgNsYWBBRB/JKAZZIk+vliQBOK7ODRfB2JWQtEIMv0JDgPuAbE0PgN8gPg3AS+AvGiPbgAjEEdDo44Y8B6IXdANOINF4U0gjkRLHzCwAt0LqmiGvAZiI6icLZrr9gOxMLYw4AHi+9BwUEULLBuo5sNAzIEvFgKAOA1HZioAYmNC0UgyBgBq02dEp3OFYgAAAABJRU5ErkJggg=="
+        />
+      </div>
+      <div class="advanced-wrapper">
+        <div id="changelog-container" v-html="changelog"></div>
+      </div>
+    </div>
     <div v-if="!isConnected" class="preloader">
       <div class="preloader-wrapper active">
         <div class="spinner-layer spinner-red-only">
@@ -554,8 +585,10 @@
 </template>
 
 <script>
-import underscore from 'underscore'
+import axios from 'axios'
+import marked from 'marked'
 import electron from 'electron'
+import underscore from 'underscore'
 const { ipcRenderer } = electron
 const isDevelopment = process.env.NODE_ENV !== 'production'
 if (!isDevelopment) {
@@ -582,6 +615,7 @@ export default {
       ],
       input: {},
       options: {
+        __autostart: false,
         __autoscroll: true,
         __autohide: false,
         __notifications: true,
@@ -590,7 +624,9 @@ export default {
         __messagesLimit: 100,
         __streampreview: false,
         __streampreviewmode: 'docked',
+        __twitchBonusCollector: false,
         __keywords: '',
+        __changelog: '0.0.0',
       },
       showAdvancedOptions: false,
       showAddChannelForm: false,
@@ -598,6 +634,8 @@ export default {
       loggedIn: false,
       isConnected: false,
       disableLogin: false,
+      changelog: '',
+      showCLogWnd: false,
       versions: {
         electron: process.versions.electron,
         electronWebpack: require('electron-webpack/package.json').version,
@@ -725,6 +763,9 @@ export default {
         audio.volume = 0.3
         audio.play()
       }
+    },
+    showToast(title, message) {
+      M.toast({ html: message }) // eslint-disable-line
     },
     parseMessage(username, message, emotes, badges, channel, color) {
       message = this.parseEmotes(message, channel, emotes)
@@ -889,6 +930,29 @@ export default {
         }
       }
     },
+    autoLogin() {
+      if (this.options['__autostart']) {
+        this.showToast('Auto-login', 'Logging in...')
+        this.logIn()
+      }
+    },
+    initChangeLog(forceShow = false) {
+      let appVer = require('../../package.json').version
+      axios
+        .get(
+          'https://raw.githubusercontent.com/vaverix/vaverix-twitch-bot/master/CHANGELOG.md'
+        )
+        .then((response) => {
+          this.changelog = marked(response.data)
+          if (this.options['__changelog'] != appVer) {
+            this.options['__changelog'] = appVer
+            this.updateOptions()
+            this.showCLogWnd = true
+          } else if (forceShow) {
+            this.showCLogWnd = true
+          }
+        })
+    },
   },
   mounted() {
     // save 'this' keyword for future reference
@@ -928,6 +992,9 @@ export default {
         self.input[input.name] = input.value
       }
     }
+    // timers
+    setTimeout(this.autoLogin, 1000)
+    setTimeout(this.initChangeLog, 2000)
     // set-up communication with the main app script and let it know that vue app is ready
     ipcRenderer.removeAllListeners()
     ipcRenderer.on('app:loggedIn', (e, item) => {
@@ -978,13 +1045,9 @@ export default {
       }
     })
     ipcRenderer.on('channel:badges', (e, item) => {
-      //console.log('channel:badges')
-      //console.log(item)
       self.badges = item
     })
     ipcRenderer.on('channel:emotes', (e, item) => {
-      //console.log('channel:emotes')
-      //console.log(item)
       self.emotes = item
     })
     ipcRenderer.on('channel:channelImages', (e, item) => {
@@ -1026,6 +1089,12 @@ export default {
         self.input[val] = ''
       })
       self.$forceUpdate()
+    })
+    ipcRenderer.on('channel:pointsEarned', (e, item) => {
+      this.showToast(
+        'channel points',
+        '+' + item.point_gain.total_points + ' channelId ' + item.channel_id
+      )
     })
     ipcRenderer.on('options:list', (e, item) => {
       self.options = item
@@ -1321,8 +1390,14 @@ input,
 }
 .username,
 .link {
-  color: hsl(260, 100%, 71%);
+  color: #e036f4;
   font-weight: bold;
+}
+.username.rainbow {
+  background-image: linear-gradient(to left, #ff008d, #9e37ec);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .link {
   cursor: pointer;
@@ -1423,6 +1498,8 @@ input,
 }
 #advanced-options,
 #add_channel_container,
+#changeLog,
+.popup,
 .preloader {
   display: inline-grid;
   background: rgba(0, 0, 0, 0.97);
@@ -1446,6 +1523,9 @@ input,
   margin: 2px auto;
   padding: 12px 20px;
   width: 42%;
+}
+.advanced-wrapper .options-group label {
+  width: 100%;
 }
 .advanced-wrapper .options-group label > span {
   display: inline-block;
@@ -1477,6 +1557,39 @@ span.badge {
   font-size: 0.7rem;
   padding: 0 5px;
   min-width: 2.3rem;
+}
+#changelog-container {
+  background: #191919;
+  border-radius: 5px;
+  color: white;
+  margin: 20px auto;
+  font-size: 1.3em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 70%;
+  height: 94vh;
+}
+#changelog-container h1 {
+  font-size: 2.2em;
+  margin: 10px 0 20px 0;
+}
+#changelog-container h2 {
+  font-size: 1.7em;
+  color: #673ab7;
+  background: #252525;
+  padding: 20px;
+  margin: 0;
+}
+#changelog-container ul {
+  text-align: left;
+  margin-left: 20%;
+  width: 75%;
+}
+#changelog-container li {
+  list-style-type: disc;
+}
+#changelog-container p {
+  color: #c0c0c0;
 }
 #toast-container {
   top: 7% !important;

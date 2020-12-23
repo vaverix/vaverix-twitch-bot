@@ -1,11 +1,15 @@
 import { ipcMain } from 'electron'
 import underscore from 'underscore'
+import AutoLaunch from 'auto-launch'
 import tmi from 'tmi.js'
 //import discord from 'discord.js'
 import { request, kraken, twitchNameToUser } from '../functions'
 import { startTwitchBonusCollector } from './twitchBonusCollector'
 import { floatingWindow } from './floatingWindow'
 
+const autoLauncher = new AutoLaunch({
+  name: require('../../../package.json').name,
+})
 const startTwitchApp = (appData) => {
   const getChannels = () => {
     let temp = []
@@ -75,6 +79,19 @@ const startTwitchApp = (appData) => {
     })
   }
 
+  const toggleAutoStart = (opts) => {
+    if (appData && appData.isDevelopment) return
+    autoLauncher
+      .isEnabled()
+      .then(function (isEnabled) {
+        if (opts && opts['__autostart']) autoLauncher.enable()
+        else autoLauncher.disable()
+      })
+      .catch(function (err) {
+        throw err
+      })
+  }
+
   // Main app
   ipcMain.on('app:ready', () => {
     if (appData.twitch && appData.twitch.disconnect) {
@@ -105,7 +122,7 @@ const startTwitchApp = (appData) => {
         (appData.twitch.readyState && appData.twitch.readyState() != 'OPEN')
       ) {
         appData.twitch = new tmi.Client({
-          options: { debug: appData.isDevelopment },
+          //options: { debug: appData.isDevelopment },
           connection: {
             reconnect: true,
             secure: true,
@@ -179,7 +196,11 @@ const startTwitchApp = (appData) => {
           }
           lookFor.forEach((val) => {
             let searchFor = String(val).toLowerCase().trim()
-            if (message.toLowerCase().indexOf(searchFor) != -1) notify = true
+            if (
+              searchFor.length > 0 &&
+              message.toLowerCase().indexOf(searchFor) != -1
+            )
+              notify = true
           })
           if (notify) {
             appData.mainWindow.webContents.send('channel:notification', msg)
@@ -283,6 +304,7 @@ const startTwitchApp = (appData) => {
     appData.options = underscore.defaults(data, appData.optionsDefaults)
     appData.mainWindow.webContents.send('options:list', appData.options)
     appData.store.set('options', appData.options)
+    toggleAutoStart(appData.options)
   })
   ipcMain.on('extra:floatingWindow', (e, channel) => {
     floatingWindow(channel, appData)

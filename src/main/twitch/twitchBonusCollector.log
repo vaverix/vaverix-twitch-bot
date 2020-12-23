@@ -1,0 +1,41 @@
+14:26:50 WithIsStreamLiveQuery
+[{"operationName":"WithIsStreamLiveQuery","variables":{"id":"59308271"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"04e46329a6786ff3a81c01c50bfa5d725902507a0deb83b0edbf7abe7a3716ea"}}}]
+=== response
+createdAt: "2020-11-20T14:02:18Z"
+id: "40060945100"
+
+14:28:38 updateUserViewedVideo
+[{"operationName":"updateUserViewedVideo","variables":{"input":{"userID":"28536119","position":1568,"videoID":"40060945100","videoType":"LIVE"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"bb58b1bd08a4ca0c61f2b8d323381a5f4cd39d763da8698f680ef1dfaea89ca1"}}}]
+
+14:31:38 ClaimCommunityPoints
+[{"operationName":"ClaimCommunityPoints","variables":{"input":{"channelID":"59308271","claimID":"74ef80b6-e2f1-4b35-8f87-817bc9dfa68f"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"46aaeebe02c99afdf4fc97c7c0cba964124bf6b0af229395f1f6d1feed05b3d0"}}}]
+
+14:31:49 WithIsStreamLiveQuery
+[{"operationName":"WithIsStreamLiveQuery","variables":{"id":"59308271"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"04e46329a6786ff3a81c01c50bfa5d725902507a0deb83b0edbf7abe7a3716ea"}}}]
+
+14:35:06 ChannelPage_SetSessionStatus
+[{"operationName":"ChannelPage_SetSessionStatus","variables":{"input":{"sessionID":"6a5ec74b17de15bf","availability":"ONLINE","activity":{"userID":"145711861","type":"WATCHING"}}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"8521e08af74c8cb5128e4bb99fa53b591391cb19492e65fb0489aeee2f96947f"}}}]
+
+14:36:50 WithIsStreamLiveQuery
+[{"operationName":"WithIsStreamLiveQuery","variables":{"id":"59308271"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"04e46329a6786ff3a81c01c50bfa5d725902507a0deb83b0edbf7abe7a3716ea"}}}]
+
+14:38:38 updateUserViewedVideo
+[{"operationName":"updateUserViewedVideo","variables":{"input":{"userID":"28536119","position":2168,"videoID":"40060945100","videoType":"LIVE"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"bb58b1bd08a4ca0c61f2b8d323381a5f4cd39d763da8698f680ef1dfaea89ca1"}}}]
+
+14:41:50 WithIsStreamLiveQuery
+[{"operationName":"WithIsStreamLiveQuery","variables":{"id":"59308271"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"04e46329a6786ff3a81c01c50bfa5d725902507a0deb83b0edbf7abe7a3716ea"}}}]
+
+14:43:01 ChannelPage_SetSessionStatus
+[{"operationName":"ChannelPage_SetSessionStatus","variables":{"input":{"sessionID":"6a5ec74b17de15bf","availability":"ONLINE","activity":{"userID":"145711861","type":"WATCHING"}}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"8521e08af74c8cb5128e4bb99fa53b591391cb19492e65fb0489aeee2f96947f"}}}]
+
+14:46:38 ClaimCommunityPoints
+[{"operationName":"ClaimCommunityPoints","variables":{"input":{"channelID":"59308271","claimID":"15491679-a0e7-4674-91f4-f8a2e77baa41"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"46aaeebe02c99afdf4fc97c7c0cba964124bf6b0af229395f1f6d1feed05b3d0"}}}]
+
+14:46:50 WithIsStreamLiveQuery
+[{"operationName":"WithIsStreamLiveQuery","variables":{"id":"59308271"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"04e46329a6786ff3a81c01c50bfa5d725902507a0deb83b0edbf7abe7a3716ea"}}}]
+
+14:48:38 updateUserViewedVideo
+[{"operationName":"updateUserViewedVideo","variables":{"input":{"userID":"28536119","position":2768,"videoID":"40060945100","videoType":"LIVE"}},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"bb58b1bd08a4ca0c61f2b8d323381a5f4cd39d763da8698f680ef1dfaea89ca1"}}}]
+
+14:51:50 WithIsStreamLiveQuery
+[{"operationName":"WithIsStreamLiveQuery","variables":{"id":"59308271"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"04e46329a6786ff3a81c01c50bfa5d725902507a0deb83b0edbf7abe7a3716ea"}}}]

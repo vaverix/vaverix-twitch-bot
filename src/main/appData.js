@@ -4,6 +4,7 @@ let appData = {}
 appData.isDevelopment = process.env.NODE_ENV !== 'production'
 appData.isMac = process.platform === 'darwin'
 appData.store = new Store()
+appData.version = require('../../package.json').version
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 appData.mainWindow
@@ -18,6 +19,7 @@ appData.channelImages = appData.store.get('channelImages', {
     'https://static-cdn.jtvnw.net/jtv_user_pictures/f2ca9fc6-5867-493b-9e94-079fd34822bb-profile_image-70x70.jpeg',
 })
 appData.optionsDefaults = {
+  __autostart: false,
   __autoscroll: true,
   __autohide: false,
   __notifications: true,
@@ -26,7 +28,9 @@ appData.optionsDefaults = {
   __messagesLimit: 100,
   __streampreview: false,
   __streampreviewmode: 'docked',
+  __twitchBonusCollector: false,
   __keywords: '',
+  __changelog: '0.0.0',
 }
 appData.options = appData.store.get('options', appData.optionsDefaults)
 appData.twitchData = appData.store.get('twitchData', {

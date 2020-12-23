@@ -34,12 +34,10 @@ const floatingWindow = (channel, appData) => {
     } else {
       window.loadURL(
         formatUrl({
-          pathname: path.join(
-            __dirname,
-            `index.html?floatingWindow=${encodeURIComponent(channel)}`
-          ),
+          pathname: path.join(__dirname, 'index.html'),
           protocol: 'file',
           slashes: true,
+          search: `?floatingWindow=${encodeURIComponent(channel)}`,
         })
       )
     }

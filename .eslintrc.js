@@ -26,6 +26,7 @@ module.exports = {
     "no-unreachable": "warn",
     "no-unused-vars": "off",
     "constructor-super": "warn",
-    "valid-typeof": "warn"
+    "valid-typeof": "warn",
+    "vue/experimental-script-setup-vars": "off"
   }
 };
