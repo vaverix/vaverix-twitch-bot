@@ -1,6 +1,12 @@
 
 # Changelog
 
+## v0.0.17
+
+Bugfixes
+
+* Show changelog only once to the user
+
 ## v0.0.16
 
 Features

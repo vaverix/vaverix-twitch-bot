@@ -947,7 +947,7 @@ export default {
         this.logIn()
       }
     },
-    initChangeLog(forceShow = true) {
+    initChangeLog(forceShow = false) {
       let appVer = require('../../package.json').version
       axios
         .get(
