@@ -36,7 +36,4 @@ jobs:
 
           # Release always since this workflow is executed only if the "on" conditions are met
           release: true
-
-branding:
-  icon: 'upload-cloud'
-  color: 'purple'
+          

@@ -1,21 +1,14 @@
 
 # Changelog
 
-## v0.0.20
+## v0.0.18 - v0.0.21
 
 New build test
-
-## v0.0.19
-
-Cleanup
-
-* Changelog file
-
-## v0.0.18
 
 Cleanup
 
 * Remove unnecessary files
+* Changelog file
 
 ## v0.0.17
 
