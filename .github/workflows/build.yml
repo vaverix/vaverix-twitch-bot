@@ -35,4 +35,4 @@ jobs:
           # release: ${{ startsWith(github.ref, 'refs/tags/v') }}
             
           # Release always since this workflow is executed only if the "on" conditions are met
-          release: always
+          release: true
