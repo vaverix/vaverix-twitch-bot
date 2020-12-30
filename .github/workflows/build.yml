@@ -1,11 +1,9 @@
 name: Build/release
 
 # Trigger the workflow on push request,
-# but only for the new tags or branches with the "!" in title
+# but only for a new tag
 on:
   push:
-    branches:
-      - "!*"
     tags:
       - "v*"
 
