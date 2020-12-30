@@ -1,6 +1,12 @@
 
 # Changelog
 
+## v0.0.18
+
+Cleanup
+
+* Remove unnecessary files
+
 ## v0.0.17
 
 Bugfixes
