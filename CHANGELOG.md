@@ -1,6 +1,12 @@
 
 # Changelog
 
+## v0.0.19
+
+Cleanup
+
+* Changelog file
+
 ## v0.0.18
 
 Cleanup
@@ -132,7 +138,6 @@ Features
 Bugfixes
 
 * Notifications now show the username correctly
-
 
 ## v0.0.2
 
