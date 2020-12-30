@@ -41,8 +41,8 @@ const gql = (clientId, oAuth, opts) => {
   let defaults = {
     base: 'https://gql.twitch.tv/gql',
     headers: {
-      Authorization: oAuth || 'OAuth vjee4wlzxs9btbg3jqyx4f3md9tknp',
-      'Client-ID': clientId || 'kimne78kx3ncx6brgo4mv6wki5h1ko',
+      Authorization: oAuth || '',
+      'Client-ID': clientId || '',
       'Content-Type': 'text/plain;charset=UTF-8',
     },
     method: 'post',

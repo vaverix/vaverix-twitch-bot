@@ -149,7 +149,11 @@
                 class="col s12 message"
               >
                 <span v-if="currentChannel == 'notifications'"
-                  >[#{{ item.channel }}]&nbsp;
+                  >[<span
+                    @click="pickChannel(item.channel)"
+                    class="link text-white"
+                    >#{{ item.channel }}</span
+                  >]&nbsp;
                 </span>
                 <span
                   v-html="
@@ -334,20 +338,6 @@
             <label
               class="tooltipped"
               data-position="top"
-              data-tooltip="Hide the app to the Windows tray when it loses focus"
-            >
-              <input
-                v-model="options['__autohide']"
-                @change="updateOptions()"
-                type="checkbox"
-              />
-              <span>Auto-hide to tray</span>
-            </label>
-          </div>
-          <div class="options-group text-left display-flex">
-            <label
-              class="tooltipped"
-              data-position="top"
               data-tooltip="Enable Windows notifications"
             >
               <input
@@ -386,6 +376,7 @@
               <span>Sound alerts</span>
             </label>
           </div>
+          <!--
           <div class="options-group text-left display-flex">
             <label
               class="tooltipped"
@@ -401,6 +392,26 @@
                 >Auto-collect channel points
                 <span class="badge text-white orange accent-4"
                   >warning: it may lead to BAN!</span
+                ></span
+              >
+            </label>
+          </div>
+          -->
+          <div class="options-group text-left display-flex">
+            <label
+              class="tooltipped"
+              data-position="top"
+              data-tooltip="Hide the app to the Windows tray when it loses focus"
+            >
+              <input
+                v-model="options['__autohide']"
+                @change="updateOptions()"
+                type="checkbox"
+              />
+              <span
+                >Auto-hide to tray
+                <span class="badge text-white red darken-4"
+                  >obsolete</span
                 ></span
               >
             </label>
@@ -936,7 +947,7 @@ export default {
         this.logIn()
       }
     },
-    initChangeLog(forceShow = false) {
+    initChangeLog(forceShow = true) {
       let appVer = require('../../package.json').version
       axios
         .get(
@@ -1557,16 +1568,17 @@ span.badge {
   font-size: 0.7rem;
   padding: 0 5px;
   min-width: 2.3rem;
+  text-shadow: 1px 1px 0px #000000;
 }
 #changelog-container {
   background: #191919;
   border-radius: 5px;
   color: white;
   margin: 20px auto;
-  font-size: 1.3em;
+  font-size: 0.9em;
   overflow-y: scroll;
   overflow-x: hidden;
-  width: 70%;
+  width: 500px;
   height: 94vh;
 }
 #changelog-container h1 {

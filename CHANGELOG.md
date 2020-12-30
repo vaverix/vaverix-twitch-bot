@@ -1,6 +1,20 @@
 
 # Changelog
 
+## v0.0.16
+
+Features
+
+* You can now click the channel from notifications list
+
+Bugfixes
+
+* Changelog visual fixes
+
+Future plans
+
+* Enable auto-claming channel points
+
 ## v0.0.15
 
 Github autobuild test

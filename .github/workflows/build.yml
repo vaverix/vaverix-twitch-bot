@@ -1,6 +1,11 @@
 name: Build/release
 
-on: push
+# Trigger the workflow on push request,
+# but only for the main branch
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   release:
