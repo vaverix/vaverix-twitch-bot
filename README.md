@@ -38,6 +38,10 @@ If Windows Defender SmartScreen blocks the app from running, you can just click 
 
 ![Screenshot](smartscreen.png)
 
+### Changelog
+
+You can find always up-to-date changelog [here](https://github.com/vaverix/vaverix-twitch-bot/blob/master/CHANGELOG.md).
+
 ### Compiling the app yourself
 
 The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm`.
