@@ -47,7 +47,7 @@
     "node-fetch": "^2.6.1",
     "source-map-support": "^0.5.19",
     "tmi.js": "^1.5.0",
-    "underscore": "^1.10.2",
+    "underscore": "^1.12.1",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.1",
     "vue-template-compiler": "^2.6.12",
