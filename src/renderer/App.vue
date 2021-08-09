@@ -123,6 +123,12 @@
                 {{ '#' + currentChannel }}
               </a>
             </li>
+            <li class="logout pull-right x-small link">
+              <img
+                @click="logOut()"
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAE1UlEQVRIiZVWW2wUVRj+z+yZy85sd/bWNbsC3VYa25q2EQpE4YWEW2gwPGgxUUjwUSvwIE8Ixnc1BkiI9cKDIibGIBZQYhpEgsGWi0DakLTQVmi37e52d/YyOztX809FC1Zg/+Q8nJkz3/dfvzPkl1/Pf71q5apNxVKRgOPAfMMdQwhDKeUIwxD31f0zhIBj247XK2o3bt74/eDHB7cQ4hgsxz2AQbSK5iiFAgLBw0YYBkzThIKS1y3H5mp8PggGg+DxeMAwDcjOZt29bduwZ9fu2J3bt6fkQOABFFosFhWGEPk/6EgAAB6GKc9mZ8+NDI/8ODQ4eG5sfJwSADaZTML2HTue3rF9+/epTBrS6TTMzmbBfigL1HEcBxbwHs2yLPTW29LSsrm9vf2FpUuXnnl3377XhwaHYOOmjbBu/bo/LNsChGBZ1qEe6kbD8zzMwRKgCyLfj4AQ9wNN03ATbGtve62zs/P9jo6O4e5db4MkSUsqpuGexXOWY0EwFAKtXJ575jjAPIpgvtmWBaVSCWtiS5IEuq67xFg79FZVVaa5uQlaW1vdulFKXQefmOBfIttBcLRAIMAKnAC8ICCJ0dTSAg44kEql3EZAe2SKFjKO54CoBD7t6YFsLje1/8D+ci6bnV62fFmpu7t7UlGU/OX+gRVj42OFRYsWVx8Bx3GglkqQUxRIZzJK7w+94oXzF+qLxWI5l8uFGhL1z37S03MlGo3WjI6OVk/Asqzn2rVr4Pf74b0DB2LxeJxZkqjjmpqbo6d6e7dMTU/n6xOJxqNHjw7EY7EgSaVTWSAk8Dhg9NwwDPjis8+D9+7dy+3es3uqrq7uqZKqut0i1/ghX8jniqWiyHEcVxuKwJ2x0btV1wCraNoWeCgVEBhnBbtIq2iglTWRAAGGMKBqZfAKAl8VAbZdOBKOnuw9qRw6eCi0smNFYnhkOMOyLJ2YmPAtWry4cecbO78VRZHz8sL4mYunV1VVA/RU13Vr9YurYTaTsT/46MM7qqoqpmlmSmV1vGtb17FIKBwoFAp3p1IzHYSQ6aqLXKlUQBRFELwC1Dc0+N/sfivV9eq2m/FYTKSU+pRCfiI1M7Pc0s00Zbnq5wCHDPP+zt69EI/HYwLHR7JKLnL1ylXh8KHDwc7OzSQajVbceQGovk0xTTilWI9isWiUDc2NytB1/vLAgE4YptLQ0AC1kYgr5VVHgMCuytI5KXBsBwhDQJQkG1X22JdfwW8XLwJ2E0r6ExOQvyXdMs0kTuiZU6fhpa1bkzKl7tWHUcmyDJcuXYK+vj43UkkUAS8P4jwWfk6O0Wqj0dXPVPQ/x0bH4Ob160s2rN/gkpumSXAQ5YDsTvl9o/5AQC4UCi6j4/w/FRYXgV7ueuVn9BYlWVVV0C0DfD4fhMNhksvmUGEf+I7p7+8/hW2Hh0KhkBsm7l25XeCm4znuH2cElGnLUQcHBy9MTk5msHMw0vmLfnP8+JZ8Tmk0LLOtpqamIxwOt8my/Jwsy3V4yXsoxb8HN4KyVoazP51dyfP8CGUpeBgPSKIEJ06eyN66dcvtmoeNCoIXZlKp4cnk5HBZLX+HXkmSCJFIbVMwFGz3+/24WhOJxPPpmXTyyJEjA2vXroU1a9YAphbThtFi3lmWBYaZ1/kA8BfxVEreRmYVpwAAAABJRU5ErkJggg=="
+              />
+            </li>
             <li class="settings pull-right x-small link">
               <img
                 @click="showAdvancedOptions = true"
@@ -156,16 +162,18 @@
                   >]&nbsp;
                 </span>
                 <span
-                  v-html="
-                    parseMessage(
-                      item.username,
-                      item.message,
-                      item.emotes,
-                      item.badges,
-                      item.channel,
-                      item.color
-                    )
-                  "
+                  v-html="parseBadges(item.badges, item.channel)"
+                  class="parsed-badges"
+                ></span>
+                <span
+                  v-html="parseUsername(item.username, item.color)"
+                  @click="addToMessage(`@${item.username}`)"
+                  :class="{ link: currentChannel != 'notifications' }"
+                  class="parsed-username"
+                ></span>
+                <span
+                  v-html="parseMessage(item.message, item.emotes, item.channel)"
+                  class="parsed-message"
                 ></span>
                 <div class="datetime">{{ item.datetime }}</div>
               </div>
@@ -472,7 +480,7 @@
           </div>
           <div class="options-group">
             <label for="__keywords">
-              Custom notification keywords<br />(what to look for in messages,
+              Custom notification keyphrases<br />(what to look for in messages,
               except your username)
             </label>
             <input
@@ -778,15 +786,18 @@ export default {
     showToast(title, message) {
       M.toast({ html: message }) // eslint-disable-line
     },
-    parseMessage(username, message, emotes, badges, channel, color) {
+    parseMessage(message, emotes, channel) {
       message = this.parseEmotes(message, channel, emotes)
       message = message.replace(
         /(?:[^src="]|^)(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi,
         "<a target='_blank' href='$1'>$1</a>"
       )
-      return `${this.parseBadges(badges, channel)}<span class="username" ${
+      return message
+    },
+    parseUsername(username, color) {
+      return `<span class="username" ${
         color ? 'style="color:' + color + ';"' : ''
-      }>@${username}</span>: ${message}`
+      }>@${username}</span>`
     },
     parseBadges(badges, channel) {
       if (
@@ -868,6 +879,7 @@ export default {
       return newMessage
     },
     addToMessage(text) {
+      if (this.currentChannel == 'notifications') return
       this.input[this.currentChannel] += ` ${text} `
       this.$forceUpdate()
       try {
@@ -924,6 +936,12 @@ export default {
     hideLoginPage() {
       this.loggedIn = true
       this.isConnected = true
+    },
+    logOut() {
+      this.loggedIn = false
+      this.isConnected = false
+      this.disableLogin = false
+      ipcRenderer.send('app:logout', {})
     },
     onScroll(event) {
       let sTop = event.target.scrollTop
@@ -1498,6 +1516,14 @@ input,
   right: 4px;
   height: 24px;
   width: 24px;
+}
+.logout {
+  position: relative;
+  top: 4px;
+  right: 4px;
+  height: 24px;
+  width: 24px;
+  margin: 0 8px;
 }
 .autoscroll {
   cursor: pointer;

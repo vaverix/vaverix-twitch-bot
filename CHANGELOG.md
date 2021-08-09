@@ -1,6 +1,25 @@
 
 # Changelog
 
+## v0.0.22
+
+Features
+
+* You can click a nickname to @ him directly
+* You can now log out from the app
+
+Bugfixes
+
+* Changed Twitch AppID
+
+Future plans
+
+* I have working Twitch Channel Points collector, should be coming soon
+* Allow links to be opened in a browser
+* Logging into multiple Twitch.tv accounts
+* Saving notifications between app restarts
+* Auto-reply bot, spamming bot, moderation actions etc.
+
 ## v0.0.18 - v0.0.21
 
 New build test

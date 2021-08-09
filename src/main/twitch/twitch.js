@@ -249,6 +249,12 @@ const startTwitchApp = (appData) => {
       })
     }
   })
+  ipcMain.on('app:logout', (e, empty) => {
+    if (appData.twitch && appData.twitch.disconnect) {
+      appData.twitch.disconnect().catch(() => {})
+      appData.twitch = null
+    }
+  })
   ipcMain.on('channel:add', (e, channel) => {
     if (
       !channel ||
