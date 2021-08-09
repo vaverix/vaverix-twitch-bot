@@ -30,7 +30,7 @@ const kraken = (opts) => {
   let defaults = {
     base: 'https://api.twitch.tv/kraken/',
     headers: {
-      'Client-ID': '5hqxrcnbjuhjps777fe6qpxoq3wavm',
+      'Client-ID': '4g5an0yjebpf93392k4c5zll7d7xcec',
       Accept: 'application/vnd.twitchtv.v5+json',
     },
   }

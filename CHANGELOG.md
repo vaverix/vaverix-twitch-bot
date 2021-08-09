@@ -1,6 +1,12 @@
 
 # Changelog
 
+## v0.0.23
+
+Bugfixes
+
+* Fixed channel avatars not loading
+
 ## v0.0.22
 
 Features
