@@ -7,5 +7,4 @@
 * Logging into multiple Twitch.tv accounts / Account depended settings
 * Saving notifications between app restarts
 * Auto-reply bot, spamming bot, moderation actions etc.
-* Link notifications with the VODs
 * Code refactoring and optimizations

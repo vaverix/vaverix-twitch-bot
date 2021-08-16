@@ -1,11 +1,12 @@
-import { ipcMain } from 'electron'
+import { ipcMain, shell } from 'electron'
 import underscore from 'underscore'
 import AutoLaunch from 'auto-launch'
 import tmi from 'tmi.js'
 //import discord from 'discord.js'
-import { request, kraken, twitchNameToUser } from '../functions'
+import { request, kraken, twitchNameToUser, nonce } from '../functions'
 import { startTwitchBonusCollector } from './twitchBonusCollector'
 import { floatingWindow } from './floatingWindow'
+import { grabVodFromChannel, startVodGrabber } from './vodGrabber'
 
 const autoLauncher = new AutoLaunch({
   name: require('../../../package.json').name,
@@ -93,6 +94,9 @@ const startTwitchApp = (appData) => {
   }
 
   // Main app
+  ipcMain.on('app:openUrl', (e, url) => {
+    shell.openExternal(url)
+  })
   ipcMain.on('app:ready', () => {
     if (appData.twitch && appData.twitch.disconnect) {
       appData.twitch.disconnect().catch(() => {})
@@ -148,6 +152,7 @@ const startTwitchApp = (appData) => {
         appData.mainWindow.webContents.send('app:loggedIn', appData.twitchData)
         getBTTVEmotes()
         getBadges()
+        startVodGrabber(appData)
         //startTwitchBonusCollector(appData)
       })
       appData.twitch.on('disconnected', (reason) => {
@@ -164,6 +169,7 @@ const startTwitchApp = (appData) => {
           tags.name = name
           message = String(message)
           let msg = {
+            id: nonce(12),
             datetime: new Date(Date.now()).toLocaleString(),
             username: tags.name,
             emotes: tags.emotes,
@@ -204,6 +210,7 @@ const startTwitchApp = (appData) => {
           })
           if (notify) {
             appData.mainWindow.webContents.send('channel:notification', msg)
+            grabVodFromChannel(msg.id, msg.channel)
           }
         } catch (error) {
           console.log(error)

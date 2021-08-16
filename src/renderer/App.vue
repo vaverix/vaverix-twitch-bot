@@ -38,12 +38,7 @@
               <span class="helper-text"
                 >Your Twitch.tv OAuth token to access the chat. If you don't
                 know what is it, you can get one
-                <a
-                  @click="open('https://twitchapps.com/tmi/')"
-                  href
-                  target="_blank"
-                  >here</a
-                >.
+                <a @click="open('https://twitchapps.com/tmi/')">here</a>.
                 <br />
                 It is used to log-in to the official Twitch.tv server locally
                 from your computer and no data is sent to our servers.<br />You
@@ -225,7 +220,19 @@
                   v-html="parseMessage(item.message, item.emotes, item.channel)"
                   class="parsed-message"
                 ></span>
-                <div class="datetime">{{ item.datetime }}</div>
+                <div class="datetime">
+                  {{ item.datetime }}
+                  <span v-if="item.vod" class="pull-right">
+                    <a @click="open(item.vod.url)" class="link text-white"
+                      >VOD
+                      <img
+                        width="8"
+                        height="8"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAA80lEQVQokZ2SPUoEQRCFvxlGkEoEDfzB1DuYiLFgZCwoCCIGGmwo7LIsnkE2MBRDr6BXMBQMXYQxEqrBQJ/02gO6MO3qg66CV/VRL+iirusNM7sBFvipJ2AVKIEamE+dEMJjIekDuAeGQJFQAa/AVfJ2gRegC6yPN9xdknYk8cvblPQu6c7dR2W6sEheR8AtcAicAssNWGSwCF0AA+ASWIlBm6jHLTEP9KXzb17l7jM58CRB/cmZu1NmIr4BZ0Bvwt8GHqoMOGzxl4C13MU2hVj+A47VgM9/YEaxVGYWeweYnRLci0z85Ftmdg3MTQmGEML+J4NwsYmEUcPLAAAAAElFTkSuQmCC"
+                    /></a>
+                    {{ item.vod.duration }}
+                  </span>
+                </div>
               </div>
               <img
                 v-if="isAutoScrollAllowed()"
@@ -715,7 +722,7 @@ export default {
   },
   methods: {
     open(b) {
-      require('electron').shell.openExternal(b)
+      ipcRenderer.send('app:openUrl', b)
     },
     logIn() {
       this.disableLogin = true
@@ -1181,6 +1188,13 @@ export default {
       self.options = item
       console.log('options:list')
       console.log(self.options)
+    })
+    ipcRenderer.on('notifications:vod', (e, item) => {
+      console.log('notifications:vod')
+      const index = self.notifications.map((e) => e.id).indexOf(item.id)
+      item.data.url = item.data.url + '?t=' + item.data.duration
+      self.notifications[index].vod = item.data
+      console.log(self.notifications[index])
     })
     ipcRenderer.send('app:ready', true)
   },

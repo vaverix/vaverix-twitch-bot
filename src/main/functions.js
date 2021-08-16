@@ -37,6 +37,17 @@ const kraken = (opts) => {
   return request(Object.assign(defaults, opts))
 }
 
+const helix = (clientId, oAuth, opts) => {
+  let defaults = {
+    base: 'https://api.twitch.tv/helix/',
+    headers: {
+      Authorization: 'Bearer vjee4wlzxs9btbg3jqyx4f3md9tknp',
+      'Client-ID': 'kimne78kx3ncx6brgo4mv6wki5h1ko',
+    },
+  }
+  return request(Object.assign(defaults, opts))
+}
+
 const gql = (clientId, oAuth, opts) => {
   let defaults = {
     base: 'https://gql.twitch.tv/gql',
@@ -58,6 +69,13 @@ const twitchNameToUser = (username) => {
   }).then(({ users }) => users[0] || null)
 }
 
+const getPastVideos = (clientId, oAuth, channelId) => {
+  return helix(clientId, oAuth, {
+    endpoint: `videos`,
+    qs: { user_id: channelId },
+  }).then(({ data }) => data[0] || null)
+}
+
 // Source: https://www.thepolyglotdeveloper.com/2015/03/create-a-random-nonce-string-using-javascript/
 const nonce = (length) => {
   var text = ''
@@ -69,4 +87,13 @@ const nonce = (length) => {
   return text
 }
 
-export { formQuerystring, request, kraken, gql, twitchNameToUser, nonce }
+export {
+  formQuerystring,
+  request,
+  kraken,
+  helix,
+  gql,
+  twitchNameToUser,
+  getPastVideos,
+  nonce,
+}

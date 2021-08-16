@@ -1,6 +1,16 @@
 
 # Changelog
 
+## v0.0.25
+
+Bugfixes
+
+* Fixed app occasionally crashing when clicking a link
+
+Features
+
+* NEW! Notifications now link directly to the VODs on Twitch.tv. No more boring searching for the right moment in the video!
+
 ## v0.0.24
 
 Bugfixes
@@ -35,7 +45,7 @@ Future plans
 * Allow links to be opened in a browser
 * Logging into multiple Twitch.tv accounts
 * Saving notifications between app restarts
-* Auto-reply bot, spamming bot, moderation actions etc.
+* Auto-reply bot, spamming bot, moderation actions, etc.
 
 ## v0.0.18 - v0.0.21
 
@@ -56,7 +66,7 @@ Bugfixes
 
 Features
 
-* You can now click the channel from notifications list
+* You can now click the channel from the notifications list
 
 Bugfixes
 
@@ -64,7 +74,7 @@ Bugfixes
 
 Future plans
 
-* Enable auto-claming channel points
+* Enable auto-claiming channel points
 
 ## v0.0.15
 
@@ -74,7 +84,7 @@ Github autobuild test
 
 Bugfixes
 
-* Fixed Github autobuild
+* Fixed Github auto build
 
 ## v0.0.13
 
@@ -127,7 +137,7 @@ Bugfixes
 
 Bugfixes
 
-* Disable auto-scroll if user tries to scroll chat up
+* Disable auto-scroll if the user tries to scroll chat up
 * Fixed adding a channel with uppercase letters
 * Small UI fixes
 
@@ -140,7 +150,7 @@ Features
 
 Bugfixes
 
-* Link to example page for oAuth token opens up in the browser now instead of in-app window
+* Link to example page for OAuth token opens up in the browser now instead of in-app window
 
 ## v0.0.6
 
@@ -151,21 +161,21 @@ Small UI changes, the layout is much cleaner now!
 Bug fixes
 
 * Added an overlay when the app disconnects from Twitch.tv servers (they often do crash lately)
-* Turn offs stream-preview on disconnect
+* Turnoffs stream-preview on disconnect
 * Fixed adding the channel with # at the beginning
 
 ## v0.0.4
 
 Bugfixes
 
-* Fixed autoupdater
+* Fixed auto-updater
 * Uploaded more appropriate screenshot
 
 ## v0.0.3
 
 Features
 
-* Autoupdater
+* Auto updater
 * Tooltips
 
 Bugfixes
@@ -175,7 +185,7 @@ Bugfixes
 ## v0.0.2
 
 * Update README
-* oAuth token input type changed from text to password
+* OAuth token input type changed from text to password
 * Delete unnecessary files
 
 ## v0.0.1 First release
