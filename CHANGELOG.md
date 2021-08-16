@@ -1,6 +1,17 @@
 
 # Changelog
 
+## v0.0.24
+
+Bugfixes
+
+* Fixed audio notifications
+
+Features
+
+* Last notification pinned at the top
+* Changelog icon
+
 ## v0.0.23
 
 Bugfixes
@@ -11,7 +22,7 @@ Bugfixes
 
 Features
 
-* You can click a nickname to @ him directly
+* You can click a nickname to @ him/her directly
 * You can now log out from the app
 
 Bugfixes
