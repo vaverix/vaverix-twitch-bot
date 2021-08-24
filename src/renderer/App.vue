@@ -118,7 +118,7 @@
                 {{ '#' + currentChannel }}
               </a>
             </li>
-            <li class="last-notify x-small">
+            <li v-if="options['__pinlast']" class="last-notify x-small">
               <img
                 width="12"
                 height="12"
@@ -463,6 +463,7 @@
           </div>
           -->
           <div class="options-group text-left display-flex">
+            <!--
             <label
               class="tooltipped"
               data-position="top"
@@ -477,6 +478,24 @@
                 >Auto-hide to tray
                 <span class="badge text-white red darken-4"
                   >obsolete</span
+                ></span
+              >
+            </label>
+            -->
+            <label
+              class="tooltipped"
+              data-position="top"
+              data-tooltip="Pin last notification on the top of the app"
+            >
+              <input
+                v-model="options['__pinlast']"
+                @change="updateOptions()"
+                type="checkbox"
+              />
+              <span
+                >Pin Last Notification on the top
+                <span class="badge text-white light-green accent-4"
+                  >new!</span
                 ></span
               >
             </label>
@@ -516,6 +535,7 @@
                 <span>Docked</span>
               </label>
             </p>
+            <!--
             <p>
               <label>
                 <input
@@ -526,6 +546,7 @@
                   value="inApp"
                   type="radio"
                 />
+                
                 <span
                   >In-app Mini preview
                   <span class="badge text-white red darken-4"
@@ -534,6 +555,7 @@
                 >
               </label>
             </p>
+            -->
           </div>
           <div class="options-group">
             <label for="__keywords">
@@ -697,6 +719,7 @@ export default {
         __notifications: true,
         __toasts: true,
         __soundalerts: true,
+        __pinlast: true,
         __messagesLimit: 100,
         __streampreview: false,
         __streampreviewmode: 'docked',
@@ -849,7 +872,7 @@ export default {
       message = this.parseEmotes(message, channel, emotes)
       message = message.replace(
         /(?:[^src="]|^)(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi,
-        "<a target='_blank' href='$1'>$1</a>"
+        ' <a onclick="openInBrowser(\'$1\')" class="chat-link">$1</a> '
       )
       return message
     },
@@ -1080,8 +1103,10 @@ export default {
         self.input[input.name] = input.value
       }
     }
+    this.openInBrowser = window.openInBrowser = function openInBrowser(url) {
+      ipcRenderer.send('app:openUrl', url)
+    }
     // timers
-    setTimeout(this.autoLogin, 1000)
     setTimeout(this.initChangeLog, 2000)
     // set-up communication with the main app script and let it know that vue app is ready
     ipcRenderer.removeAllListeners()
@@ -1109,14 +1134,17 @@ export default {
       self.input['__username'] = item['username']
       self.input['__oauth'] = item['oauth']
       self.$forceUpdate()
+      setTimeout(this.autoLogin, 1000)
     })
     ipcRenderer.on('channel:join', (e, item) => {
+      /*
       self.notifications.push({
         channel: 'notifications',
         username: 'vaverixBot',
         message: `Joined #${item}`,
         datetime: new Date(Date.now()).toLocaleString(),
       })
+      */
       if (self.joinedChannels.indexOf(item) == -1) {
         self.joinedChannels.push(item)
       }
@@ -1161,12 +1189,20 @@ export default {
     ipcRenderer.on('channel:notification', (e, item) => {
       if (!self.loggedIn) return
       self.notifications.push(item)
+      if (self.options && self.options['__messagesLimit']) {
+        let arrLength = self.notifications.length
+        let maxNumber = self.options['__messagesLimit']
+        if (arrLength > maxNumber) {
+          self.notifications.splice(0, arrLength - maxNumber)
+        }
+      }
       self.$forceUpdate()
       self.scrollBottom(`#scrollable-notifications`)
       self.showNotification(
         'vaverixBot',
         `[#${item.channel}] @${item.username}: ${item.message}`
       )
+      ipcRenderer.send('notifications:save', self.notifications)
     })
     ipcRenderer.on('channel:list', (e, item) => {
       self.channels = item
@@ -1190,11 +1226,16 @@ export default {
       console.log(self.options)
     })
     ipcRenderer.on('notifications:vod', (e, item) => {
-      console.log('notifications:vod')
-      const index = self.notifications.map((e) => e.id).indexOf(item.id)
-      item.data.url = item.data.url + '?t=' + item.data.duration
-      self.notifications[index].vod = item.data
-      console.log(self.notifications[index])
+      if (item && item.data && item.data.url) {
+        const index = self.notifications.map((e) => e.id).indexOf(item.id)
+        item.data.url = item.data.url + '?t=' + item.data.duration
+        self.notifications[index].vod = item.data
+      }
+    })
+    ipcRenderer.on('notifications:load', (e, item) => {
+      self.notifications = item
+      self.$forceUpdate()
+      self.scrollBottom(`#scrollable-notifications`)
     })
     ipcRenderer.send('app:ready', true)
   },
@@ -1490,6 +1531,12 @@ input,
 .link {
   color: #e036f4;
   font-weight: bold;
+}
+.chat-link {
+  cursor: pointer;
+  color: #9b6aff;
+  margin: 0 2px;
+  font-size: 13px;
 }
 .username.rainbow {
   background-image: linear-gradient(to left, #ff008d, #9e37ec);

@@ -87,6 +87,14 @@ const nonce = (length) => {
   return text
 }
 
+const btoa = (str) => {
+  return Buffer.from(str).toString('base64')
+}
+
+const atob = (b64Encoded) => {
+  return Buffer.from(b64Encoded, 'base64').toString()
+}
+
 export {
   formQuerystring,
   request,
@@ -96,4 +104,6 @@ export {
   twitchNameToUser,
   getPastVideos,
   nonce,
+  btoa,
+  atob,
 }

@@ -1,6 +1,18 @@
 
 # Changelog
 
+## v0.0.26
+
+Bugfixes
+
+* Settings cleanup
+
+Features
+
+* You can now hide the last notification pinned on top of the app
+* Links from the chat are now being opened in your default browser
+* Saving notifications between app restarts
+
 ## v0.0.25
 
 Bugfixes

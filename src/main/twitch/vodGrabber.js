@@ -11,9 +11,9 @@ const startVodGrabber = (appData) => {
       try {
         let channel = channelsToGrab[0].channel
         let notificationId = channelsToGrab[0].id
+        channelsToGrab.shift()
         if (appData.channelIds[channel]) {
           let channelId = appData.channelIds[channel]
-          channelsToGrab.shift()
           getPastVideos(
             'kimne78kx3ncx6brgo4mv6wki5h1ko',
             appData.twitchData.oauth.replace('oauth:', 'Bearer '),

