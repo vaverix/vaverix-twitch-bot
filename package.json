@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "auto-launch": "^5.0.5",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "css-loader": "^3.5.3",
     "discord.js": "^12.2.0",
     "electron-log": "^4.1.1",
