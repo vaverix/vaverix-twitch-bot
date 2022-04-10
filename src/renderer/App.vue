@@ -351,7 +351,10 @@
             v-for="(item, i) in channels"
             :key="i"
             class="channel"
-            :style="{ backgroundImage: 'url(' + channelImages[item] + ')' }"
+            :style="{
+              backgroundImage:
+                'url(' + (channelImages[item] || '/undefined.png') + ')',
+            }"
           >
             <span
               @click="pickChannel(item)"
@@ -711,6 +714,7 @@ export default {
           datetime: new Date(Date.now()).toLocaleString(),
         },
       ],
+      followedusers: [],
       input: {},
       options: {
         __autostart: false,
@@ -725,6 +729,7 @@ export default {
         __streampreviewmode: 'docked',
         __twitchBonusCollector: false,
         __keywords: '',
+        __followedusers: '',
         __changelog: '0.0.0',
       },
       showAdvancedOptions: false,
@@ -1236,6 +1241,11 @@ export default {
       self.notifications = item
       self.$forceUpdate()
       self.scrollBottom(`#scrollable-notifications`)
+    })
+    ipcRenderer.on('followedusers:load', (e, item) => {
+      self.followedusers = item
+      self.$forceUpdate()
+      self.scrollBottom(`#scrollable-followedusers`)
     })
     ipcRenderer.send('app:ready', true)
   },

@@ -41,8 +41,8 @@ const helix = (clientId, oAuth, opts) => {
   let defaults = {
     base: 'https://api.twitch.tv/helix/',
     headers: {
-      Authorization: 'Bearer vjee4wlzxs9btbg3jqyx4f3md9tknp',
-      'Client-ID': 'kimne78kx3ncx6brgo4mv6wki5h1ko',
+      Authorization: 'Bearer ejw09z72sa3lj1dv8739jm6dynygag',
+      'Client-ID': '5hqxrcnbjuhjps777fe6qpxoq3wavm',
     },
   }
   return request(Object.assign(defaults, opts))
@@ -62,11 +62,18 @@ const gql = (clientId, oAuth, opts) => {
   return request(Object.assign(defaults, opts))
 }
 
-const twitchNameToUser = (username) => {
+/*const twitchNameToUser = (username) => {
   return kraken({
     endpoint: 'users',
     qs: { login: username },
   }).then(({ users }) => users[0] || null)
+}*/
+
+const twitchNameToUser = (username) => {
+  return helix(null, null, {
+    endpoint: 'users',
+    qs: { login: username },
+  }).then(({ data }) => data[0] || null)
 }
 
 const getPastVideos = (clientId, oAuth, channelId) => {

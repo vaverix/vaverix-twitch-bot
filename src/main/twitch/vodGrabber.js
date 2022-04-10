@@ -14,11 +14,7 @@ const startVodGrabber = (appData) => {
         channelsToGrab.shift()
         if (appData.channelIds[channel]) {
           let channelId = appData.channelIds[channel]
-          getPastVideos(
-            'kimne78kx3ncx6brgo4mv6wki5h1ko',
-            appData.twitchData.oauth.replace('oauth:', 'Bearer '),
-            channelId
-          ).then((data) => {
+          getPastVideos(null, null, channelId).then((data) => {
             appData.mainWindow.webContents.send('notifications:vod', {
               id: notificationId,
               channel,

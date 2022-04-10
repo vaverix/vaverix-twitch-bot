@@ -32,6 +32,7 @@ appData.optionsDefaults = {
   __streampreviewmode: 'docked',
   __twitchBonusCollector: false,
   __keywords: 'vaver, vav',
+  __followedusers: '',
   __changelog: '0.0.0',
 }
 appData.options = appData.store.get('options', appData.optionsDefaults)

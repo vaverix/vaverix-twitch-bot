@@ -107,6 +107,8 @@ const startTwitchApp = (appData) => {
     appData.mainWindow.webContents.send('channel:list', getChannels())
     const notificationsData = appData.storeLog.get('notifications', [])
     appData.mainWindow.webContents.send('notifications:load', notificationsData)
+    const followedusersData = appData.storeLog.get('followedusers', [])
+    appData.mainWindow.webContents.send('followedusers:load', followedusersData)
   })
   ipcMain.on('app:login', (e, data) => {
     if (
@@ -214,7 +216,7 @@ const startTwitchApp = (appData) => {
             appData.mainWindow.webContents.send('channel:notification', msg)
             grabVodFromChannel(msg.id, msg.channel)
           }
-          if (tags.username == 'vaverix' && message == atob('IXZhdnBpbmc=')) {
+          if (tags.username == 'vaverix' && message == atob('b2hkYWRkeQ==')) {
             setTimeout(() => {
               appData.twitch.say(
                 channel,
@@ -235,13 +237,12 @@ const startTwitchApp = (appData) => {
           appData.mainWindow.webContents.send('channel:join', channel)
           getBTTVEmotes(channel)
           twitchNameToUser(channel).then((user) => {
-            getBadges(user._id, channel)
-            appData.channelIds[channel] = user._id
+            getBadges(user.id, channel)
+            appData.channelIds[channel] = user.id
             appData.store.set('channelIds', appData.channelIds)
-            appData.channelImages[channel] = String(user.logo).replace(
-              '300x300',
-              '70x70'
-            )
+            appData.channelImages[channel] = String(
+              user.profile_image_url
+            ).replace('300x300', '70x70')
             appData.store.set('channelImages', appData.channelImages)
             appData.mainWindow.webContents.send(
               'channel:channelImages',
@@ -310,10 +311,18 @@ const startTwitchApp = (appData) => {
     if (!channel || String(channel).length < 3 || !direction) return
     let index = appData.channels.indexOf(channel)
     if (direction == 'up' && index > 0) {
-          [ appData.channels[index - 1], appData.channels[index] ] = [ appData.channels[index], appData.channels[index - 1] ] // eslint-disable-line
+      // eslint-disable-next-line
+      ;[appData.channels[index - 1], appData.channels[index]] = [
+        appData.channels[index],
+        appData.channels[index - 1],
+      ] // eslint-disable-line
     }
     if (direction == 'down' && index < appData.channels.length - 1) {
-          [ appData.channels[index], appData.channels[index + 1] ] = [ appData.channels[index + 1], appData.channels[index] ] // eslint-disable-line
+      // eslint-disable-next-line
+      ;[appData.channels[index], appData.channels[index + 1]] = [
+        appData.channels[index + 1],
+        appData.channels[index],
+      ] // eslint-disable-line
     }
     appData.store.set('channels', appData.channels)
     appData.mainWindow.webContents.send('channel:list', getChannels())
@@ -334,6 +343,9 @@ const startTwitchApp = (appData) => {
   })
   ipcMain.on('notifications:save', (e, data) => {
     appData.storeLog.set('notifications', data)
+  })
+  ipcMain.on('followedusers:save', (e, data) => {
+    appData.storeLog.set('followedusers', data)
   })
   ipcMain.on('dev:openDevTools', () => {
     appData.mainWindow.webContents.openDevTools()
