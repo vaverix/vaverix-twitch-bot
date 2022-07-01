@@ -237,6 +237,7 @@ const startTwitchApp = (appData) => {
           appData.mainWindow.webContents.send('channel:join', channel)
           getBTTVEmotes(channel)
           twitchNameToUser(channel).then((user) => {
+            console.log(user)
             getBadges(user.id, channel)
             appData.channelIds[channel] = user.id
             appData.store.set('channelIds', appData.channelIds)

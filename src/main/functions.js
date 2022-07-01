@@ -41,8 +41,8 @@ const helix = (clientId, oAuth, opts) => {
   let defaults = {
     base: 'https://api.twitch.tv/helix/',
     headers: {
-      Authorization: 'Bearer ejw09z72sa3lj1dv8739jm6dynygag',
-      'Client-ID': '5hqxrcnbjuhjps777fe6qpxoq3wavm',
+      Authorization: 'Bearer 4vxa5borsy5nvjsc0mmaqbknyh4j9z',
+      'Client-ID': '8naakiqzus8tqgvkaktgsged48vrzn',
     },
   }
   return request(Object.assign(defaults, opts))
