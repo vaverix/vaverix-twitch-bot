@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.0.28
+
+Bugfixes
+
+- Fixed API errors
+
 ## v0.0.27
 
 Bugfixes
